@@ -1,0 +1,39 @@
+# The lanes of the tree, top to bottom.
+# Every node lives in tree/<domain id>/<node id>.md.
+# `hue` is an OKLCH hue angle (0-360); gold (around 90) is reserved for the open frontier.
+
+- id: info
+  name: Information & AI
+  short: Info & AI
+  hue: 195
+  blurb: Writing, printing, computing, networks and machine intelligence.
+
+- id: math
+  name: Mathematics
+  short: Math
+  hue: 295
+  blurb: Number, shape, proof, and the problems still standing.
+
+- id: physics
+  name: Physics & Astronomy
+  short: Physics
+  hue: 245
+  blurb: Matter, energy, spacetime and the sky.
+
+- id: engineering
+  name: Engineering
+  short: Engineering
+  hue: 50
+  blurb: Tools, machines, power, electronics and spaceflight.
+
+- id: chemistry
+  name: Chemistry & Materials
+  short: Chemistry
+  hue: 350
+  blurb: Fire, metals, molecules and materials.
+
+- id: life
+  name: Life & Medicine
+  short: Life
+  hue: 150
+  blurb: Farming, cells, genes, medicine and the brain.
