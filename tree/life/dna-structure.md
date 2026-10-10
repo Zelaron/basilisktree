@@ -1,5 +1,6 @@
 ---
 title: DNA Double Helix
+importance: 94
 year: 1953
 requires: [x-ray-crystallography, genetics, quantum-chemistry]
 by: [James Watson, Francis Crick, Rosalind Franklin, Maurice Wilkins]

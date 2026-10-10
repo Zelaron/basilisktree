@@ -152,7 +152,11 @@
       }
       below.set(n.id, set);
       n.reach = set.size;
-      n.r = Math.min(8, 2.4 + 0.78 * Math.log2(1 + n.reach));
+      // importance (1-100) is editorial and set in the node file; until a node has one, estimate it from reach
+      n.imp = n.importance ?? (n.status === 'known' ? Math.round(clamp(12 + 11 * Math.log2(1 + n.reach), 8, 80)) : 40);
+      n.r = 2.2 + 6.3 * Math.pow(n.imp / 100, 1.25);
+      n.ring = 10 + 14 * (n.imp / 100);
+      n.big = n.status !== 'known' && (n.grand || n.imp >= 80);
     }
 
     // the Ledger: everyone credited for a discovery or for progress on a problem
@@ -313,9 +317,9 @@
     for (const n of S.nodes) {
       const el = document.createElement('button');
       el.type = 'button';
-      el.className = ['node', n.status !== 'known' && n.status, n.status === 'known' && n.with.length && 'ai'].filter(Boolean).join(' ');
+      el.className = ['node', n.status !== 'known' && n.status, n.status === 'known' && n.with.length && 'ai', n.big && 'big'].filter(Boolean).join(' ');
       el.dataset.id = n.id;
-      el.style.cssText = `left:${n.x}px;top:${n.y}px;--h:${hueOf(n)};--r:${n.r.toFixed(2)}`;
+      el.style.cssText = `left:${n.x}px;top:${n.y}px;--h:${hueOf(n)};--r:${n.r.toFixed(2)};--ring:${n.ring.toFixed(1)}`;
       const status = n.status === 'open' ? 'open problem' : n.status === 'claimed' ? 'claimed result' : '';
       el.setAttribute('aria-label', [n.title, status, metaLine(n)].filter(Boolean).join(', '));
       el.innerHTML = `<span class="star-box"><span class="star"></span></span><span class="label"><span class="t">${esc(n.title)}</span><span class="m">${esc(metaLine(n))}</span></span>`;
@@ -368,36 +372,39 @@
 
   const measureCtx = document.createElement('canvas').getContext('2d');
   function measure() {
-    measureCtx.font = `500 13.5px ${getComputedStyle(document.documentElement).getPropertyValue('--sans')}`;
+    const sans = getComputedStyle(document.documentElement).getPropertyValue('--sans');
     for (const n of S.nodes) {
       n.lw = n.labelEl.offsetWidth;
+      measureCtx.font = n.big ? `600 14.5px ${sans}` : `500 13.5px ${sans}`;
       n.tw = measureCtx.measureText(n.title).width;
     }
     for (const lane of S.lanes) lane.textLen = lane.tag.firstElementChild.offsetHeight;
     pickMajors();
   }
 
-  // A few bright stars keep their names at far zoom: chosen round-robin across eras by reach,
-  // skipping any whose enlarged label would collide with one already chosen.
+  // At far zoom the big open problems keep their names, then the most important discoveries,
+  // chosen round-robin across eras and skipping any label that would collide with one already chosen.
   function pickMajors() {
     const k = overview().k;
     const scale = 0.78 / Math.min(k, FAR_K);
     const segs = 6, nCols = S.cols.length;
     const pools = Array.from({ length: segs }, (_, i) =>
       S.nodes
-        .filter((n) => n.status === 'known' && n.reach > 0 && Math.floor((n.col * segs) / nCols) === i)
-        .sort((a, b) => b.reach - a.reach),
+        .filter((n) => n.status === 'known' && Math.floor((n.col * segs) / nCols) === i)
+        .sort((a, b) => b.imp - a.imp || b.reach - a.reach),
     );
     const boxes = [];
     const fits = (n) => {
-      if (n.title.length > 26) return false;
+      if (n.title.length > (n.big ? 34 : 26)) return false;
       const box = { x0: n.x - 10, x1: n.x + LABEL_X + ((n.tw || 120) + 10) * scale + 14, y0: n.y - 8 * scale, y1: n.y + 24 * scale };
       if (boxes.some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) return false;
       boxes.push(box);
       return true;
     };
     const chosen = new Set();
-    for (let round = 0; round < 4 && chosen.size < 16; round++) {
+    for (const n of S.nodes.filter((m) => m.big).sort((a, b) => b.imp - a.imp)) if (fits(n)) chosen.add(n);
+    const limit = chosen.size + 16;
+    for (let round = 0; round < 4 && chosen.size < limit; round++) {
       for (const pool of pools) {
         const n = pool.find((m) => !chosen.has(m) && fits(m));
         if (n) chosen.add(n);
@@ -409,7 +416,7 @@
   function anchor(n, out, far) {
     if (far) return [n.x + STAR_CX, n.y + STAR_CY];
     if (out) return [n.x + LABEL_X + (n.lw || 120) + 6, n.y + STAR_CY];
-    const r = n.status !== 'known' ? 7 : n.with.length ? n.r + 4.5 : n.r;
+    const r = n.status !== 'known' ? n.ring / 2 : n.with.length ? n.r + 4.5 : n.r;
     return [n.x + STAR_CX - r - 3, n.y + STAR_CY];
   }
   function edgeD(e, far) {
@@ -749,10 +756,19 @@
     drawHighlights();
   }
   function randomFrontier({ initial = false } = {}) {
-    const pool = S.nodes.filter((n) => n.status !== 'known' && !S.hidden.has(n.domain));
+    const pool = S.nodes.filter((n) => n.status !== 'known' && !S.hidden.has(n.domain) && true);
     if (!pool.length) return;
-    let n = pool[Math.floor(Math.random() * pool.length)];
-    if (pool.length > 1) while (n === S.selected) n = pool[Math.floor(Math.random() * pool.length)];
+    // Mostly land on problems within reach of one person with a good AI model; grand challenges less often.
+    const weight = (n) => (n === S.selected ? 0 : n.grand ? 0.3 : 1);
+    const total = pool.reduce((s, n) => s + weight(n), 0);
+    let pick = Math.random() * total, n = pool[0];
+    for (const m of pool) {
+      pick -= weight(m);
+      if (pick <= 0) {
+        n = m;
+        break;
+      }
+    }
     S.welcome = initial;
     select(n.id, { push: !initial, fly: 'always', k: isPhone() ? 0.82 : 0.95, flight: initial ? { min: 2000, max: 2800 } : { min: 900, max: 2200 } });
   }
@@ -805,7 +821,7 @@
     n.status === 'known' ? `<span class="dot" style="--h:${hueOf(n)}"></span>` : `<span class="ring${n.status === 'claimed' ? ' solid' : ''}"></span>`;
   function nodeRow(n, meta) {
     const ai = n.with.length || n.progress.some((p) => p.with?.length);
-    return `<li><button class="row${n.status !== 'known' ? ' open' : ''}" type="button" data-node="${n.id}">${dotFor(n)}<span class="row-title">${esc(n.title)}</span>${ai ? '<span class="spark" title="Machine in the loop">✦</span>' : ''}<span class="row-meta">${esc(meta ?? (n.status === 'known' ? fmtYear(n.year, n.circa) : n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open'))}</span></button></li>`;
+    return `<li><button class="row${n.status !== 'known' ? ' open' : ''}" type="button" data-node="${n.id}">${dotFor(n)}<span class="row-title">${esc(n.title)}</span>${ai ? '<span class="spark" title="Machine in the loop">✦</span>' : ''}${n.importance ? `<span class="imp" title="Importance, 1–100">${n.importance}</span>` : ''}<span class="row-meta">${esc(meta ?? (n.status === 'known' ? fmtYear(n.year, n.circa) : n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open'))}</span></button></li>`;
   }
   function personButton(name) {
     const slug = slugify(name);
@@ -828,6 +844,8 @@
     if (n.status === 'open') badges.push(`<span class="badge gold"><span class="ring"></span>Open problem${n.posed !== undefined ? ` · since ${esc(fmtYear(n.posed))}` : ''}</span>`);
     if (n.status === 'claimed') badges.push(`<span class="badge gold"><span class="ring solid"></span>Claimed · under review</span>`);
     if (n.status === 'known' && n.posed !== undefined && n.year > n.posed) badges.push(`<span class="badge">Open for ${plural(n.year - n.posed, 'year')}</span>`);
+    if (n.grand) badges.push(`<span class="badge gold">Grand challenge</span>`);
+    if (n.importance) badges.push(`<span class="badge" title="How much it matters, 1–100. Set in the node file and argued in pull requests.">Importance ${n.importance}</span>`);
     if (n.verified) badges.push(`<span class="badge verified">✓ Formally verified · ${esc(n.verified)}</span>`);
     if (n.with.length) badges.push(`<span class="badge">✦ Machine in the loop</span>`);
     if (badges.length) parts.push(`<div class="badges">${badges.join('')}</div>`);
@@ -885,13 +903,14 @@
     return `
       <p class="kicker">An atlas of the known</p>
       <h2>Everything we’ve figured out, what it stood on, and what’s still open</h2>
-      <p class="lede">Each star is a discovery, sized by how much depends on it. Lines run from prerequisites to what they made possible, left to right through time. <span style="color:var(--gold-ink)">Gold rings</span> are the frontier: open problems and technology nobody has built yet.</p>
+      <p class="lede">Each star is a discovery, sized by how much it mattered. Lines run from prerequisites to what they made possible, left to right through time. <span style="color:var(--gold-ink)">Gold rings</span> are the frontier: open problems and technology nobody has built yet.</p>
       <div class="stats"><div><b>${known}</b><span>discoveries</span></div><div><b>${open}</b><span>open problems</span></div><div><b>${S.people.size}</b><span>names in the Ledger</span></div></div>
       <div class="actions"><button class="btn btn-gold" type="button" data-action="random">Take me to the frontier</button><button class="btn btn-line" type="button" data-action="fit">See the whole tree</button></div>
       <h3>Reading the map</h3>
       <ul class="legend">
-        <li><span class="sym"><span class="s-small"></span></span>A discovery. Bigger, brighter stars have more built on them.</li>
+        <li><span class="sym"><span class="s-small"></span></span>A discovery. The bigger the star, the more it mattered (importance, 1–100).</li>
         <li><span class="sym"><span class="ring"></span></span>An open problem or unbuilt technology, waiting for someone.</li>
+        <li><span class="sym"><span class="ring big"></span></span>A big one: the problems that would change the world, like fusion power or the Riemann Hypothesis.</li>
         <li><span class="sym"><span class="s-spark"></span></span>Found with a machine in the loop: computer search, a proof assistant or an AI.</li>
         <li><span class="sym"><span class="s-line"></span></span>“Required for.” Select any star to light up everything it stands on.</li>
       </ul>
@@ -910,22 +929,21 @@
 
   function renderFrontier() {
     const open = S.nodes.filter((n) => n.status !== 'known');
-    const groups = S.domains
-      .map((d) => ({ d, items: open.filter((n) => n.domain === d.id).sort((a, b) => (a.posed ?? 1e9) - (b.posed ?? 1e9)) }))
-      .filter((g) => g.items.length);
+    const byImp = (a, b) => b.imp - a.imp || (a.posed ?? 1e9) - (b.posed ?? 1e9);
+    const meta = (n) => [n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open', n.progress.length ? plural(n.progress.length, 'step') : ''].filter(Boolean).join(' · ');
+    const big = open.filter((n) => n.big).sort(byImp);
+    const reach = open.filter((n) => !n.big);
+    const groups = S.domains.map((d) => ({ d, items: reach.filter((n) => n.domain === d.id).sort(byImp) })).filter((g) => g.items.length);
     const withAi = open.filter((n) => n.progress.some((p) => p.with?.length)).length;
     return `
       <p class="kicker">The frontier</p>
       <h2>${plural(open.length, 'open problem')}</h2>
       <p class="lede">Each one sits on the map with its prerequisites in place. Solve one, or move a bound, and your name goes on the tree.${withAi ? ` ${withAi} already show progress made with a machine in the loop (✦).` : ''}</p>
       <div class="actions"><button class="btn btn-gold" type="button" data-action="random">Fly to a random one</button></div>
+      ${big.length ? `<h3><span class="ring big"></span>The big ones<span class="count">${big.length}</span></h3><ul class="plain-list">${big.map((n) => nodeRow(n, meta(n))).join('')}</ul>` : ''}
+      ${groups.length ? `<p class="section-note">Within reach of one person with a good AI model, by field, most important first.</p>` : ''}
       ${groups
-        .map(
-          (g) =>
-            `<h3><span class="dot" style="--h:${g.d.hue}"></span>${esc(g.d.name)}<span class="count">${g.items.length}</span></h3><ul class="plain-list">${g.items
-              .map((n) => nodeRow(n, [n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open', n.progress.length ? plural(n.progress.length, 'step') : ''].filter(Boolean).join(' · ')))
-              .join('')}</ul>`,
-        )
+        .map((g) => `<h3><span class="dot" style="--h:${g.d.hue}"></span>${esc(g.d.name)}<span class="count">${g.items.length}</span></h3><ul class="plain-list">${g.items.map((n) => nodeRow(n, meta(n))).join('')}</ul>`)
         .join('')}`;
   }
 
@@ -978,8 +996,9 @@
       requestAnimationFrame(() => $('#contribute', panelBody)?.scrollIntoView({ behavior: calm() ? 'auto' : 'smooth', block: 'start' }));
     },
     copy: (el) => {
-      const token = S.selected?.id || (S.person ? `by-${S.person.slug}` : '');
-      const url = `${location.origin}${location.pathname}${token ? `#${token}` : ''}`;
+      // Share the preview page (/n/<id>/ or /p/<name>/): it carries a title and description for link previews.
+      const base = S.site.url || location.origin;
+      const url = S.selected ? `${base}/n/${S.selected.id}/` : S.person ? `${base}/p/${S.person.slug}/` : `${base}/`;
       const done = () => {
         el.textContent = 'Link copied';
         setTimeout(() => (el.textContent = 'Copy link'), 1600);
@@ -1065,7 +1084,7 @@
       else if (t.includes(nq)) s = 62;
       else if (n.aliases.some((a) => norm(a).startsWith(nq))) s = 58;
       else if (n.aliases.some((a) => norm(a).includes(nq))) s = 48;
-      if (s) out.push({ kind: 'node', n, s: s + Math.min(8, n.reach / 12) });
+      if (s) out.push({ kind: 'node', n, s: s + n.imp / 12 });
     }
     for (const p of S.people.values()) {
       const t = norm(p.name);

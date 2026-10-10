@@ -465,3 +465,25 @@ button.who:hover { border-bottom-color: var(--ink-2); }
 .viewport.far .world.person .node.lit .t { display: block; max-width: none; white-space: nowrap; -webkit-line-clamp: none; margin-left: -4px; padding: 0 5px; border-radius: 5px; background: rgba(10, 15, 30, 0.72); }
 .viewport.far .world.person .node.lit .m { display: none; }
 .viewport.far .world.person .node:not(.lit) .label, .viewport.far .world.focus .node:not(.lit) .label { opacity: 0; }
+
+/* ── importance ────────────────────────────────────────── */
+.node.open .star, .node.claimed .star { width: calc(var(--ring) * 1px); height: calc(var(--ring) * 1px); }
+.node.open .star-box::after { width: calc(var(--ring) * 1px); height: calc(var(--ring) * 1px); margin: calc(var(--ring) * -0.5px) 0 0 calc(var(--ring) * -0.5px); }
+.node.big .star-box::before {
+  content: ""; position: absolute; left: 50%; top: 50%; pointer-events: none;
+  width: calc(var(--ring) * 1px + 16px); height: calc(var(--ring) * 1px + 16px);
+  margin: calc(var(--ring) * -0.5px - 8px) 0 0 calc(var(--ring) * -0.5px - 8px);
+  border-radius: 50%; border: 1px solid rgba(242, 196, 109, 0.38);
+  box-shadow: 0 0 26px rgba(242, 196, 109, 0.32), inset 0 0 14px rgba(242, 196, 109, 0.12);
+  transform: scale(var(--zs));
+}
+.node.big .t { font-size: 14.5px; font-weight: 600; }
+.ring.big { width: 15px; height: 15px; box-shadow: 0 0 0 3px rgba(242, 196, 109, 0.18), 0 0 12px var(--gold-glow); }
+.imp {
+  flex: none; min-width: 26px; padding: 1px 6px; border-radius: 6px; text-align: center;
+  font: 500 11px/1.4 var(--mono); color: var(--ink-2); background: rgba(255, 255, 255, 0.06); font-variant-numeric: tabular-nums;
+}
+.row.open .imp { color: var(--gold-ink); background: var(--gold-wash); }
+.section-note { margin: 22px 0 -8px !important; font-size: 13.5px; color: var(--ink-3) !important; }
+.viewport.far .node.major, .viewport.far .node.sel { max-width: none; }
+.viewport.far .node.major .t, .viewport.far .node.sel .t, .viewport.far .world.person .node.lit .t { overflow: visible; }

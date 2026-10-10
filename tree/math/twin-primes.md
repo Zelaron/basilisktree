@@ -1,6 +1,8 @@
 ---
 title: Twin Prime Conjecture
 status: open
+importance: 75
+grand: true
 posed: 1849
 requires: [prime-number-theorem]
 aliases: [bounded gaps, prime gaps]

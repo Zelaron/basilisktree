@@ -1,6 +1,8 @@
 ---
 title: Self-Sustaining Mars Settlement
 status: open
+importance: 85
+grand: true
 requires: [reusable-rockets]
 field: aerospace
 links:

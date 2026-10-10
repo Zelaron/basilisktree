@@ -1,5 +1,6 @@
 ---
 title: Electronic Computer
+importance: 97
 year: 1945
 requires: [turing-machine, switching-circuits, vacuum-tube]
 by: [John Mauchly, J. Presper Eckert, John von Neumann]

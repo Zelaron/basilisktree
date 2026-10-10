@@ -1,6 +1,7 @@
 ---
 title: Union-Closed Sets Conjecture
 status: open
+importance: 45
 posed: 1979
 requires: [probabilistic-method, information-theory]
 aliases: [Frankl's conjecture]

@@ -1,6 +1,8 @@
 ---
 title: Virtual Cell
 status: open
+importance: 84
+grand: true
 requires: [alphafold, human-genome]
 aliases: [whole-cell model, cell simulation]
 links:

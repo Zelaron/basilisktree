@@ -1,6 +1,7 @@
 ---
 title: Inscribed Square Problem
 status: open
+importance: 40
 posed: 1911
 requires: [topology]
 aliases: [Toeplitz' conjecture, square peg problem]

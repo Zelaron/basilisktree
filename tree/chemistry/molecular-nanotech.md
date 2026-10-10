@@ -1,6 +1,8 @@
 ---
 title: Molecular Manufacturing
 status: open
+importance: 88
+grand: true
 posed: 1959
 requires: [scanning-probe, protein-design]
 aliases: [nanotechnology, atomically precise manufacturing]

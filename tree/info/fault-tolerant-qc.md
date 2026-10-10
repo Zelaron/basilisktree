@@ -1,6 +1,8 @@
 ---
 title: Fault-Tolerant Quantum Computer
 status: open
+importance: 92
+grand: true
 requires: [below-threshold-qec, shor-algorithm]
 links:
   - https://en.wikipedia.org/wiki/Threshold_theorem

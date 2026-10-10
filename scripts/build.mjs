@@ -19,7 +19,7 @@ const BUNDLE = argv.has('--bundle');
 const ID_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const RESERVED_IDS = new Set(['explore', 'frontier', 'ledger', 'about']); // used as URL routes
 const STATUSES = new Set(['known', 'open', 'claimed']);
-const KEYS = new Set(['title', 'status', 'year', 'circa', 'posed', 'requires', 'by', 'with', 'verified', 'field', 'aliases', 'tags', 'quote', 'links', 'progress']);
+const KEYS = new Set(['title', 'status', 'importance', 'grand', 'year', 'circa', 'posed', 'requires', 'by', 'with', 'verified', 'field', 'aliases', 'tags', 'quote', 'links', 'progress']);
 const PROGRESS_KEYS = new Set(['year', 'by', 'with', 'what', 'link']);
 
 const errors = [];
@@ -177,6 +177,16 @@ for (const { id, domain, file, data, body } of raw) {
   n.status = data.status ?? 'known';
   if (!STATUSES.has(n.status)) error(file, `"status" must be one of: ${[...STATUSES].join(', ')}`);
 
+  if (data.importance !== undefined) {
+    if (!isInt(data.importance) || data.importance < 1 || data.importance > 100) error(file, '"importance" must be a whole number from 1 to 100 (see CONTRIBUTING.md)');
+    else n.importance = data.importance;
+  }
+  if (data.grand !== undefined) {
+    if (typeof data.grand !== 'boolean') error(file, '"grand" must be true or false');
+    else if (data.grand && n.status === 'known') warn(file, '"grand" only applies to open or claimed problems');
+    else if (data.grand) n.grand = true;
+  }
+
   for (const k of ['year', 'posed']) {
     if (data[k] !== undefined && !isInt(data[k])) error(file, `"${k}" must be a whole number (negative for BCE)`);
     else if (data[k] !== undefined) n[k] = data[k];
@@ -293,6 +303,7 @@ const tree = {
   generated: new Date().toISOString(),
   site: {
     name: 'Basilisk Tree',
+    url: (process.env.BASILISK_URL || 'https://basilisktree.org').replace(/\/$/, ''),
     repo: process.env.BASILISK_REPO || null,
     branch: process.env.BASILISK_BRANCH || 'main',
   },
@@ -303,6 +314,82 @@ const json = JSON.stringify(tree);
 fs.mkdirSync(path.join(SITE, 'data'), { recursive: true });
 fs.writeFileSync(path.join(SITE, 'data', 'tree.json'), json);
 console.log(`wrote site/data/tree.json (${(json.length / 1024).toFixed(0)} KB)`);
+
+// ── share pages ────────────────────────────────────────────────────────
+// Link previews (Reddit, Discord, chat apps) never see the part after "#", so every node and person
+// gets a tiny page at /n/<id>/ or /p/<name>/ with its own title and description that forwards to the map.
+
+const SITE_URL = (process.env.BASILISK_URL || 'https://basilisktree.org').replace(/\/$/, '');
+const slugify = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const clip = (s, max = 200) => (s.length <= max ? s : `${s.slice(0, s.lastIndexOf(' ', max - 1))}…`);
+const fmtYear = (y, circa) => (y === undefined ? '' : `${circa ? 'c. ' : ''}${y < 0 ? `${(-y).toLocaleString('en-US')} BCE` : y}`);
+
+function sharePage({ title, description, url, target }) {
+  const e = escapeHtml;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${e(title)} · Basilisk Tree</title>
+<meta name="description" content="${e(description)}">
+<link rel="canonical" href="${e(url)}">
+<meta property="og:site_name" content="Basilisk Tree">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${e(title)}">
+<meta property="og:description" content="${e(description)}">
+<meta property="og:url" content="${e(url)}">
+<meta property="og:image" content="${SITE_URL}/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta http-equiv="refresh" content="0; url=${e(target)}">
+<script>location.replace(${JSON.stringify(target)})</script>
+</head>
+<body style="background:#0a0f1e;color:#e9edf7;font-family:system-ui,sans-serif"><p><a style="color:#f2c46d" href="${e(target)}">${e(title)} on the Basilisk Tree</a></p></body>
+</html>
+`;
+}
+
+for (const dir of ['n', 'p']) fs.rmSync(path.join(SITE, dir), { recursive: true, force: true });
+const people = new Map();
+const credit = (name, n) => {
+  const slug = slugify(name);
+  if (!slug) return;
+  if (!people.has(slug)) people.set(slug, { name, ids: new Set() });
+  people.get(slug).ids.add(n.id);
+};
+for (const n of nodes) {
+  for (const name of n.by) credit(name, n);
+  for (const pr of n.progress) for (const name of pr.by) credit(name, n);
+  const who = n.by.length ? n.by.slice(0, 3).join(', ') + (n.by.length > 3 ? ' and others' : '') : '';
+  const lead =
+    n.status === 'open'
+      ? `Open problem${n.posed !== undefined ? ` since ${fmtYear(n.posed)}` : ''}${n.importance ? ` · importance ${n.importance}/100` : ''}.`
+      : n.status === 'claimed'
+        ? `Claimed${who ? ` by ${who}` : ''}, under review.`
+        : `${[fmtYear(n.year, n.circa), who].filter(Boolean).join(' · ')}.`;
+  const dir = path.join(SITE, 'n', n.id);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'index.html'),
+    sharePage({ title: n.title, description: clip(`${lead} ${n.summary}`), url: `${SITE_URL}/n/${n.id}/`, target: `/#${n.id}` }),
+  );
+}
+for (const [slug, p] of people) {
+  const dir = path.join(SITE, 'p', slug);
+  fs.mkdirSync(dir, { recursive: true });
+  const titles = [...p.ids].map((id) => nodes.find((n) => n.id === id).title);
+  fs.writeFileSync(
+    path.join(dir, 'index.html'),
+    sharePage({ title: p.name, description: clip(`${p.ids.size} ${p.ids.size === 1 ? 'entry' : 'entries'} on the Basilisk Tree: ${titles.join(', ')}.`), url: `${SITE_URL}/p/${slug}/`, target: `/#by-${slug}` }),
+  );
+}
+const today = new Date().toISOString().slice(0, 10);
+fs.writeFileSync(
+  path.join(SITE, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>${SITE_URL}/</loc><lastmod>${today}</lastmod></url>\n${nodes.map((n) => `<url><loc>${SITE_URL}/n/${n.id}/</loc></url>`).join('\n')}\n</urlset>\n`,
+);
+fs.writeFileSync(path.join(SITE, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+console.log(`wrote ${nodes.length} node pages, ${people.size} people pages and sitemap.xml`);
 
 if (BUNDLE) {
   // A single page with styles, script and data inlined, and no <html>/<head>/<body> wrapper,

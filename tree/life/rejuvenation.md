@@ -1,6 +1,8 @@
 ---
 title: Rejuvenation Therapy
 status: open
+importance: 95
+grand: true
 requires: [ipsc, crispr]
 aliases: [longevity, aging, partial reprogramming]
 links:

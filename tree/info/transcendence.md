@@ -1,6 +1,8 @@
 ---
 title: Threshold of Transcendence
 status: open
+importance: 100
+grand: true
 requires: [agi, whole-brain-emulation, molecular-nanotech, fusion-power]
 aliases: [singularity, Alpha Centauri]
 quote:

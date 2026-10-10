@@ -1,5 +1,6 @@
 ---
 title: Control of Fire
+importance: 100
 year: -1000000
 circa: true
 requires: []

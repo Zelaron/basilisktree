@@ -1,6 +1,8 @@
 ---
 title: Riemann Hypothesis
 status: open
+importance: 100
+grand: true
 posed: 1859
 requires: [zeta-function]
 aliases: [RH]

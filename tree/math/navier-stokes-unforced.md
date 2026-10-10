@@ -1,6 +1,8 @@
 ---
 title: Navier–Stokes Without Forcing
 status: open
+importance: 80
+grand: true
 posed: 1934
 requires: [navier-stokes]
 aliases: [unforced Navier–Stokes, unforced blow-up]

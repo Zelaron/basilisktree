@@ -1,6 +1,8 @@
 ---
 title: Birch–Swinnerton-Dyer Conjecture
 status: open
+importance: 85
+grand: true
 posed: 1965
 requires: [elliptic-curves, zeta-function]
 aliases: [BSD]

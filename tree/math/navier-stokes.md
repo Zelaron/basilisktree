@@ -1,6 +1,8 @@
 ---
 title: Navier–Stokes Regularity
 status: claimed
+importance: 88
+grand: true
 posed: 1934
 requires: [fluid-dynamics, functional-analysis]
 by: [OpenAI]

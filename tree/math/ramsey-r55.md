@@ -1,6 +1,7 @@
 ---
 title: "Ramsey Number R(5,5)"
 status: open
+importance: 36
 posed: 1955
 requires: [probabilistic-method]
 aliases: [Ramsey numbers]

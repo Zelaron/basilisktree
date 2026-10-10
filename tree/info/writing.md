@@ -1,5 +1,6 @@
 ---
 title: Writing
+importance: 100
 year: -3200
 circa: true
 requires: [counting, agriculture]

@@ -1,6 +1,8 @@
 ---
 title: Yang–Mills Mass Gap
 status: open
+importance: 86
+grand: true
 posed: 2000
 requires: [standard-model, functional-analysis]
 links:

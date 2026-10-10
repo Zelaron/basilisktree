@@ -1,6 +1,7 @@
 ---
 title: Kissing Numbers
 status: open
+importance: 42
 posed: 1694
 requires: [geometry, linear-algebra]
 aliases: [sphere packing]

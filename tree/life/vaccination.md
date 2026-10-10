@@ -1,5 +1,6 @@
 ---
 title: Vaccination
+importance: 93
 year: 1796
 requires: []
 by: [Edward Jenner]

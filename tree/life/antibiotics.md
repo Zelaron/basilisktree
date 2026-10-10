@@ -1,5 +1,6 @@
 ---
 title: Antibiotics
+importance: 92
 year: 1928
 requires: [germ-theory]
 by: [Alexander Fleming, Howard Florey, Ernst Chain]

@@ -1,6 +1,8 @@
 ---
 title: Collatz Conjecture
 status: open
+importance: 68
+grand: true
 posed: 1937
 requires: [arithmetic]
 aliases: ["3n + 1", "3x+1"]

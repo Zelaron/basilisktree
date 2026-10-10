@@ -1,6 +1,8 @@
 ---
 title: Matrix Multiplication Exponent
 status: open
+importance: 74
+grand: true
 posed: 1969
 requires: [fast-matrix-multiplication]
 aliases: [omega, "ω = 2"]

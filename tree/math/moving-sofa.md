@@ -1,6 +1,7 @@
 ---
 title: Moving Sofa Problem
 status: claimed
+importance: 38
 posed: 1966
 requires: [calculus, geometry]
 aliases: [Gerver's sofa]

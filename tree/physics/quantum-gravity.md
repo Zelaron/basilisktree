@@ -1,6 +1,8 @@
 ---
 title: Quantum Gravity
 status: open
+importance: 94
+grand: true
 requires: [general-relativity, qft]
 aliases: [string theory, loop quantum gravity, theory of everything]
 links:

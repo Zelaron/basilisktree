@@ -1,5 +1,6 @@
 ---
 title: Agriculture
+importance: 100
 year: -9500
 circa: true
 requires: [stone-tools]

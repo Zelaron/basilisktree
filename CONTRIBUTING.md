@@ -40,6 +40,8 @@ dimensions 1–4, 8 and 24.
 | `title` | yes | Short name, under about 48 characters so it fits on the map. |
 | `requires` | yes | Ids of the **direct, essential** prerequisites, usually 1 to 4. Use `[]` for a root. The other direction ("unlocks") is computed. |
 | `status` | no | `known` (default), `open` (unsolved or unbuilt), or `claimed` (a result under review). |
+| `importance` | yes for new nodes | How much it matters, from 1 to 100 (rubric below). Sets how large the node is drawn and the order of the Frontier tab. |
+| `grand` | no | `true` for open problems beyond one person with a good AI model (Millennium-level, fusion, AGI). The random "frontier" spin picks these less often. |
 | `year` | for known | Year it was achieved. Negative for BCE. Add `circa: true` if approximate. |
 | `posed` | no | Year an open problem was posed. On a solved problem, the map shows how long it stayed open. |
 | `by` | for known | People or teams who did it. This is the credit, and it feeds the Ledger. |
@@ -54,6 +56,21 @@ dimensions 1–4, 8 and 24.
 The description goes below the front matter: one to three plain sentences, with a date in them. It can link other nodes with `[[node-id]]` or `[[node-id|text]]`, and supports `**bold**`, `*italic*`, `` `code` `` and `[links](https://…)`.
 
 Run `npm run check` before opening the pull request; CI runs the same check.
+
+## Importance
+
+`importance` is an editorial score: how much a discovery mattered, or how much solving a problem would matter, for humanity and for its field. It is not a difficulty score. Use these anchors and argue for anything unusual in the pull request:
+
+| Score | Discoveries | Open problems |
+|---|---|---|
+| 95–100 | Fire, agriculture, writing, calculus, electricity, germ theory, the transistor | Riemann Hypothesis, P vs NP, AGI, commercial fusion power |
+| 80–94 | Newtonian mechanics, quantum mechanics, the periodic table, vaccines, the steam engine, deep learning | Room-temperature superconductor, quantum gravity, fault-tolerant quantum computer, the other Millennium problems |
+| 60–79 | Fourier analysis, X-ray crystallography, PCR, CRISPR, the laser, GPS | Twin primes, Goldbach, Collatz, matrix multiplication exponent ω = 2 |
+| 40–59 | The four colour theorem, Strassen's algorithm, the Higgs boson | Sendov's conjecture, union-closed sets, Hadwiger–Nelson, a new kissing number |
+| 20–39 | A notable theorem or invention known mainly inside its field | A well-known problem in one subfield; a famous bound or record |
+| 1–19 | A niche result or incremental step | A specialist problem |
+
+An AI may suggest a score; people decide.
 
 ## Credit and verification
 

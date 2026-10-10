@@ -1,6 +1,8 @@
 ---
 title: Artificial General Intelligence
 status: open
+importance: 100
+grand: true
 posed: 1956
 requires: [reasoning-models]
 aliases: [AGI, superintelligence]

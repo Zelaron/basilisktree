@@ -1,6 +1,7 @@
 ---
 title: Chromatic Number of the Plane
 status: open
+importance: 46
 posed: 1950
 requires: [graph-theory, geometry]
 aliases: [Hadwiger–Nelson problem, unit distance graph]

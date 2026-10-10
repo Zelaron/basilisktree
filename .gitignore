@@ -2,3 +2,7 @@ node_modules/
 dist/
 site/data/tree.json
 .DS_Store
+site/n/
+site/p/
+site/sitemap.xml
+site/robots.txt

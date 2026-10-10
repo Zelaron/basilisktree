@@ -1,5 +1,6 @@
 ---
 title: Printing Press
+importance: 93
 year: 1440
 circa: true
 requires: [writing, metallurgy, machines]

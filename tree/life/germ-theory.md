@@ -1,5 +1,6 @@
 ---
 title: Germ Theory
+importance: 96
 year: 1876
 requires: [microscope]
 by: [Louis Pasteur, Robert Koch]
