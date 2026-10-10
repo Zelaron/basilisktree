@@ -1,7 +1,7 @@
 ---
 title: Room-Temperature Superconductor
 status: open
-importance: 92
+importance: 90
 grand: true
 requires: [high-tc]
 aliases: [LK-99]

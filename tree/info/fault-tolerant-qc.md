@@ -1,7 +1,7 @@
 ---
 title: Fault-Tolerant Quantum Computer
 status: open
-importance: 92
+importance: 88
 grand: true
 requires: [below-threshold-qec, shor-algorithm]
 links:

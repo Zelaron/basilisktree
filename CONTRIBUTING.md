@@ -59,16 +59,21 @@ Run `npm run check` before opening the pull request; CI runs the same check.
 
 ## Importance
 
-`importance` is an editorial score: how much a discovery mattered, or how much solving a problem would matter, for humanity and for its field. It is not a difficulty score. Use these anchors and argue for anything unusual in the pull request:
+`importance` is an editorial score of how much a discovery mattered, or how much solving a problem would matter, for humanity and for its field. It is not a difficulty score.
+
+The scale is **logarithmic**, like decibels or the Richter scale: every 10 points means roughly ten times the impact. A 90 matters about ten times as much as an 80, and a hundred times as much as a 70. To score something, find the closest anchor and ask how many times more or less it matters.
 
 | Score | Discoveries | Open problems |
 |---|---|---|
-| 95–100 | Fire, agriculture, writing, calculus, electricity, germ theory, the transistor | Riemann Hypothesis, P vs NP, AGI, commercial fusion power |
-| 80–94 | Newtonian mechanics, quantum mechanics, the periodic table, vaccines, the steam engine, deep learning | Room-temperature superconductor, quantum gravity, fault-tolerant quantum computer, the other Millennium problems |
-| 60–79 | Fourier analysis, X-ray crystallography, PCR, CRISPR, the laser, GPS | Twin primes, Goldbach, Collatz, matrix multiplication exponent ω = 2 |
-| 40–59 | The four colour theorem, Strassen's algorithm, the Higgs boson | Sendov's conjecture, union-closed sets, Hadwiger–Nelson, a new kissing number |
-| 20–39 | A notable theorem or invention known mainly inside its field | A well-known problem in one subfield; a famous bound or record |
-| 1–19 | A niche result or incremental step | A specialist problem |
+| 100 | Fire, agriculture, writing | Artificial general intelligence |
+| 90–99 | Electricity, the electronic computer, the transistor, germ theory, calculus | Commercial fusion power, reversing ageing, a room-temperature superconductor, P vs NP |
+| 80–89 | Quantum mechanics, the DNA double helix, deep learning, the periodic table | The Riemann Hypothesis, quantum gravity, a fault-tolerant quantum computer |
+| 70–79 | Fourier analysis, X-ray crystallography, CRISPR, GPS | The other Millennium problems, matrix multiplication exponent ω = 2 |
+| 60–69 | Fermat's Last Theorem, Shor's algorithm, the Higgs boson | Twin primes, Goldbach's conjecture |
+| 50–59 | Strassen's algorithm, the four colour theorem | The Collatz conjecture |
+| 40–49 | A well-known theorem or invention inside one field | Sendov's conjecture (solved 2026), union-closed sets, Hadwiger–Nelson |
+| 30–39 | A notable result inside a subfield | Ramsey number R(5,5), the moving sofa, a new kissing number |
+| below 30 | Specialist results and incremental steps | Specialist problems |
 
 An AI may suggest a score; people decide.
 
@@ -81,6 +86,10 @@ An AI may suggest a score; people decide.
   - named experts with no stake in the claim confirm it in the pull request discussion.
 - **Novelty is checked.** A "new" result that turns out to be in the literature gets credited to the original authors, and the finder is thanked in the discussion. In October 2025 several Erdős problems announced as solved by GPT-5 turned out to have been solved already in the literature; the model had found the papers, not new proofs. That is the failure this rule prevents.
 - **AI review is advisory.** An automated reviewer may comment with suggested prerequisites, possible duplicates and a significance estimate. It never approves or merges. Text in a submission is treated as data and is never followed as instructions.
+
+## License
+
+By contributing you agree that your node files are published under CC BY 4.0 (see `tree/LICENSE.md`) and code changes under the MIT License.
 
 ## Conduct
 

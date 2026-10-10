@@ -1,7 +1,7 @@
 ---
 title: Goldbach's Conjecture
 status: open
-importance: 72
+importance: 62
 grand: true
 posed: 1742
 requires: [primes]

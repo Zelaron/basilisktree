@@ -1,6 +1,6 @@
 ---
 title: Calculus
-importance: 98
+importance: 92
 year: 1684
 requires: [analytic-geometry]
 by: [Isaac Newton, Gottfried Wilhelm Leibniz]

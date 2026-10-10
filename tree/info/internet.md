@@ -1,6 +1,6 @@
 ---
 title: Internet
-importance: 95
+importance: 93
 year: 1974
 requires: [electronic-computer, information-theory]
 by: [Vint Cerf, Bob Kahn]

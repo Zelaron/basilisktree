@@ -1,6 +1,6 @@
 ---
 title: Quantum Mechanics
-importance: 95
+importance: 89
 year: 1925
 requires: [quanta, linear-algebra, pdes]
 by: [Werner Heisenberg, Erwin Schrödinger, Max Born, Paul Dirac]

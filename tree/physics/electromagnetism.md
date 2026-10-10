@@ -1,6 +1,6 @@
 ---
 title: Electromagnetism
-importance: 97
+importance: 96
 year: 1831
 requires: [electrostatics, battery]
 by: [Hans Christian Ørsted, André-Marie Ampère, Michael Faraday]

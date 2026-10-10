@@ -1,7 +1,7 @@
 ---
 title: P vs NP
 status: open
-importance: 100
+importance: 90
 grand: true
 posed: 1971
 requires: [complexity-theory]

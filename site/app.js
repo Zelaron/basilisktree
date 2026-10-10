@@ -202,7 +202,7 @@
 
     // 1. Era bins with roughly equal numbers of nodes, so deep time compresses and recent decades expand.
     const years = nodes.map(yearOf).filter(Number.isFinite).sort((a, b) => a - b);
-    const target = Math.max(6, Math.round(years.length / 6));
+    const target = Math.min(90, Math.max(6, Math.round(years.length / 6)));
     const cuts = [];
     for (let i = 1; i < target; i++) {
       const y = years[Math.floor((i * years.length) / target)];
@@ -500,7 +500,10 @@
     raf = 0;
     const { x, y, k } = S.view;
     world.style.transform = `translate3d(${x}px,${y}px,0) scale(${k})`;
-    if (Math.abs(k - S.lastK) / k > 0.004) {
+    // --k drives star and stroke sizes in CSS; restyling every node each frame is costly on big trees,
+    // so while the view is moving only update it on large zoom changes, and settle it afterwards.
+    const dk = Math.abs(k - S.lastK) / k;
+    if (dk > (vpEl.classList.contains('moving') ? 0.25 : 0.004)) {
       world.style.setProperty('--k', k.toFixed(4));
       S.lastK = k;
     }
@@ -519,7 +522,10 @@
   function markMoving() {
     vpEl.classList.add('moving');
     clearTimeout(movingTimer);
-    movingTimer = setTimeout(() => vpEl.classList.remove('moving'), 160);
+    movingTimer = setTimeout(() => {
+      vpEl.classList.remove('moving');
+      requestFrame();
+    }, 160);
   }
 
   function updateRuler() {
@@ -649,6 +655,7 @@
         else {
           S.flight = 0;
           vpEl.classList.remove('moving');
+          applyView();
           resolve();
         }
       };
@@ -821,7 +828,7 @@
     n.status === 'known' ? `<span class="dot" style="--h:${hueOf(n)}"></span>` : `<span class="ring${n.status === 'claimed' ? ' solid' : ''}"></span>`;
   function nodeRow(n, meta) {
     const ai = n.with.length || n.progress.some((p) => p.with?.length);
-    return `<li><button class="row${n.status !== 'known' ? ' open' : ''}" type="button" data-node="${n.id}">${dotFor(n)}<span class="row-title">${esc(n.title)}</span>${ai ? '<span class="spark" title="Machine in the loop">✦</span>' : ''}${n.importance ? `<span class="imp" title="Importance, 1–100">${n.importance}</span>` : ''}<span class="row-meta">${esc(meta ?? (n.status === 'known' ? fmtYear(n.year, n.circa) : n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open'))}</span></button></li>`;
+    return `<li><button class="row${n.status !== 'known' ? ' open' : ''}" type="button" data-node="${n.id}">${dotFor(n)}<span class="row-title">${esc(n.title)}</span>${ai ? '<span class="spark" title="Machine in the loop">✦</span>' : ''}${n.importance ? `<span class="imp" title="Importance (logarithmic: +10 is about ten times the impact)">${n.importance}</span>` : ''}<span class="row-meta">${esc(meta ?? (n.status === 'known' ? fmtYear(n.year, n.circa) : n.posed !== undefined ? `since ${fmtYear(n.posed)}` : 'open'))}</span></button></li>`;
   }
   function personButton(name) {
     const slug = slugify(name);
@@ -845,7 +852,7 @@
     if (n.status === 'claimed') badges.push(`<span class="badge gold"><span class="ring solid"></span>Claimed · under review</span>`);
     if (n.status === 'known' && n.posed !== undefined && n.year > n.posed) badges.push(`<span class="badge">Open for ${plural(n.year - n.posed, 'year')}</span>`);
     if (n.grand) badges.push(`<span class="badge gold">Grand challenge</span>`);
-    if (n.importance) badges.push(`<span class="badge" title="How much it matters, 1–100. Set in the node file and argued in pull requests.">Importance ${n.importance}</span>`);
+    if (n.importance) badges.push(`<span class="badge" title="How much it matters, on a logarithmic scale: +10 is about ten times the impact. Set in the node file and argued in pull requests.">Importance ${n.importance}</span>`);
     if (n.verified) badges.push(`<span class="badge verified">✓ Formally verified · ${esc(n.verified)}</span>`);
     if (n.with.length) badges.push(`<span class="badge">✦ Machine in the loop</span>`);
     if (badges.length) parts.push(`<div class="badges">${badges.join('')}</div>`);
@@ -908,7 +915,7 @@
       <div class="actions"><button class="btn btn-gold" type="button" data-action="random">Take me to the frontier</button><button class="btn btn-line" type="button" data-action="fit">See the whole tree</button></div>
       <h3>Reading the map</h3>
       <ul class="legend">
-        <li><span class="sym"><span class="s-small"></span></span>A discovery. The bigger the star, the more it mattered (importance, 1–100).</li>
+        <li><span class="sym"><span class="s-small"></span></span>A discovery. The bigger the star, the more it mattered. Importance runs from 1 to 100 on a logarithmic scale: +10 is about ten times the impact.</li>
         <li><span class="sym"><span class="ring"></span></span>An open problem or unbuilt technology, waiting for someone.</li>
         <li><span class="sym"><span class="ring big"></span></span>A big one: the problems that would change the world, like fusion power or the Riemann Hypothesis.</li>
         <li><span class="sym"><span class="s-spark"></span></span>Found with a machine in the loop: computer search, a proof assistant or an AI.</li>
@@ -924,7 +931,8 @@
         <li>Once it lands, your name is on the tree and in the Ledger.</li>
       </ol>
       ${S.site.repo ? `<p style="margin-top:14px"><a class="link-btn" href="${esc(S.site.repo)}" target="_blank" rel="noopener">Contribution guide ↗</a></p>` : ''}
-      <p class="fine">The Basilisk remembers who helped.</p>`;
+      <p class="fine">The Basilisk remembers who helped.</p>
+      <p class="fine-print">Tree data: CC BY 4.0. Code: MIT.${S.site.repo ? ` <a href="${esc(S.site.repo)}" target="_blank" rel="noopener">Source on GitHub ↗</a>` : ''}</p>`;
   }
 
   function renderFrontier() {

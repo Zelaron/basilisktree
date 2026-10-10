@@ -1,6 +1,6 @@
 ---
 title: Deep Learning
-importance: 90
+importance: 88
 year: 2012
 requires: [backpropagation, gpu-computing]
 by: [Alex Krizhevsky, Ilya Sutskever, Geoffrey Hinton]

@@ -1,7 +1,7 @@
 ---
 title: Whole-Brain Emulation
 status: open
-importance: 86
+importance: 88
 grand: true
 requires: [connectomics, deep-learning]
 aliases: [mind uploading]

@@ -1,7 +1,7 @@
 ---
 title: Twin Prime Conjecture
 status: open
-importance: 75
+importance: 64
 grand: true
 posed: 1849
 requires: [prime-number-theorem]

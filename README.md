@@ -76,3 +76,7 @@ Pull requests run the same check through `.github/workflows/check.yml`.
 4. **An AI reviewer** that comments on each pull request with prerequisite suggestions, duplicate and literature checks, and a significance estimate against a published rubric. It advises and never merges.
 5. **Formal verification in CI**: a node with a Lean proof gets its proof built against Mathlib before it can be marked verified.
 6. **Imports from VibeMathed** (CC BY 4.0) for AI-assisted results that already have a curated verification status.
+
+## License
+
+The code is under the [MIT License](LICENSE). The tree data in `tree/` is under [CC BY 4.0](tree/LICENSE.md): reuse it freely, with credit to Basilisk Tree and a link to https://basilisktree.org.

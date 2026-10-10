@@ -1,6 +1,6 @@
 ---
 title: Transistor
-importance: 97
+importance: 95
 year: 1947
 requires: [band-theory]
 by: [John Bardeen, Walter Brattain, William Shockley]

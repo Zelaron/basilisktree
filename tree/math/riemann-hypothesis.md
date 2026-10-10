@@ -1,7 +1,7 @@
 ---
 title: Riemann Hypothesis
 status: open
-importance: 100
+importance: 85
 grand: true
 posed: 1859
 requires: [zeta-function]

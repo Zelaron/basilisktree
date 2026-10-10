@@ -1,6 +1,6 @@
 ---
 title: Steam Engine
-importance: 92
+importance: 93
 year: 1712
 requires: [metallurgy, machines]
 by: [Thomas Newcomen, James Watt]

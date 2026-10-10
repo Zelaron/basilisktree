@@ -1,7 +1,7 @@
 ---
 title: Collatz Conjecture
 status: open
-importance: 68
+importance: 56
 grand: true
 posed: 1937
 requires: [arithmetic]

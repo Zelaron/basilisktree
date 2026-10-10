@@ -1,7 +1,7 @@
 ---
 title: Commercial Fusion Power
 status: open
-importance: 96
+importance: 95
 grand: true
 requires: [fusion-ignition, high-tc]
 field: energy

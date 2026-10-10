@@ -1,7 +1,7 @@
 ---
 title: Nature of Dark Matter
 status: open
-importance: 88
+importance: 80
 grand: true
 posed: 1933
 requires: [general-relativity, standard-model]

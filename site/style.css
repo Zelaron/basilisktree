@@ -487,3 +487,5 @@ button.who:hover { border-bottom-color: var(--ink-2); }
 .section-note { margin: 22px 0 -8px !important; font-size: 13.5px; color: var(--ink-3) !important; }
 .viewport.far .node.major, .viewport.far .node.sel { max-width: none; }
 .viewport.far .node.major .t, .viewport.far .node.sel .t, .viewport.far .world.person .node.lit .t { overflow: visible; }
+.fine-print { margin-top: 10px !important; font: 400 11.5px/1.5 var(--mono); color: var(--ink-3) !important; }
+.fine-print a { color: var(--ink-2); }

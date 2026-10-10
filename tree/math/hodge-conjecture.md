@@ -1,7 +1,7 @@
 ---
 title: Hodge Conjecture
 status: open
-importance: 82
+importance: 70
 grand: true
 posed: 1950
 requires: [algebraic-geometry, topology]

@@ -1,7 +1,7 @@
 ---
 title: Navier–Stokes Without Forcing
 status: open
-importance: 80
+importance: 72
 grand: true
 posed: 1934
 requires: [navier-stokes]

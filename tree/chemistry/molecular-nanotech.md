@@ -1,7 +1,7 @@
 ---
 title: Molecular Manufacturing
 status: open
-importance: 88
+importance: 90
 grand: true
 posed: 1959
 requires: [scanning-probe, protein-design]

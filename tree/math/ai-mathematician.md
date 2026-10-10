@@ -1,7 +1,7 @@
 ---
 title: Autonomous AI Mathematician
 status: open
-importance: 93
+importance: 90
 grand: true
 requires: [imo-gold, alphaevolve, lean-mathlib]
 aliases: [automated theorem proving, AI for math]

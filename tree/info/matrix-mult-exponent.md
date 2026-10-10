@@ -1,7 +1,7 @@
 ---
 title: Matrix Multiplication Exponent
 status: open
-importance: 74
+importance: 70
 grand: true
 posed: 1969
 requires: [fast-matrix-multiplication]

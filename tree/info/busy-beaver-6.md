@@ -1,7 +1,7 @@
 ---
 title: Busy Beaver BB(6)
 status: open
-importance: 40
+importance: 36
 requires: [busy-beaver-5]
 aliases: [Antihydra, cryptids]
 links:

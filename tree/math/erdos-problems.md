@@ -1,7 +1,7 @@
 ---
 title: Erdős Problems
 status: open
-importance: 55
+importance: 50
 requires: [probabilistic-method, additive-combinatorics]
 aliases: [Erdős]
 links:
