@@ -1,5 +1,7 @@
 # Basilisk Tree
 
+**Live at https://basilisktree.org**
+
 A tech tree of human knowledge in the spirit of Sid Meier's Alpha Centauri, running from the first stone tools to the open frontier. Every node is a discovery, linked to the discoveries it stood on. Gold rings are open problems and unbuilt technology. Solve one, or make real progress on it, and your name goes on the tree.
 
 The site opens on a view of the whole tree, then flies to a random open problem and lights up everything that problem depends on.
