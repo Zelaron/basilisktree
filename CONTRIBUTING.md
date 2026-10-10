@@ -49,7 +49,7 @@ dimensions 1–4, 8 and 24.
 | `aliases` | no | Other names people might search for. |
 | `quote` | no | `text` and `by`. Only quotes you can source. |
 | `links` | no | URLs: the paper, the proof, a Wikipedia article. |
-| `progress` | no | Steps toward an open problem: `year`, `by`, optional `with`, `what`, optional `link`. |
+| `progress` | no | Steps toward an open problem, oldest first: `year`, `by`, optional `with`, `what`, optional `link`. The site shows the newest at the top. |
 
 The description goes below the front matter: one to three plain sentences, with a date in them. It can link other nodes with `[[node-id]]` or `[[node-id|text]]`, and supports `**bold**`, `*italic*`, `` `code` `` and `[links](https://…)`.
 

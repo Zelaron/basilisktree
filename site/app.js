@@ -842,7 +842,9 @@
       parts.push(`<div class="cta"><p><b>${n.status === 'claimed' ? 'Claimed, not yet settled.' : 'Unclaimed.'}</b> ${n.status === 'claimed' ? 'Help check the claim, or formalize it, and your name goes on the tree.' : 'Solve it, or make real progress on it, and your name goes on the tree and into the Ledger.'}</p><p><button class="link-btn" type="button" data-action="contribute">How to submit →</button></p></div>`);
     }
     if (n.progress.length) {
-      parts.push(`<h3>Progress <span class="count">${n.progress.length}</span></h3><ol class="progress-list">${n.progress
+      // Files list progress oldest first; show the newest step at the top.
+      const newestFirst = n.progress.map((p, i) => [p, i]).sort((a, b) => b[0].year - a[0].year || b[1] - a[1]).map(([p]) => p);
+      parts.push(`<h3>Progress <span class="count">${n.progress.length}</span></h3><ol class="progress-list">${newestFirst
         .map(
           (p) =>
             `<li><span class="yr">${p.year}</span><div><span class="what">${p.html}</span><span class="by">${joinNames(p.by.map(personButton))}${p.with?.length ? ` · ✦ with ${esc(joinNames(p.with))}` : ''}${p.link ? ` · <a href="${esc(p.link)}" target="_blank" rel="noopener">source ↗</a>` : ''}</span></div></li>`,
