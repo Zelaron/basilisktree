@@ -136,7 +136,7 @@ a { color: inherit; }
 }
 .star-box { position: relative; flex: none; width: 18px; height: 22px; display: grid; place-items: center; }
 .star { display: none; }
-.label { display: flex; flex-direction: column; min-width: 0; padding-top: 1px; }
+.label { position: relative; display: flex; flex-direction: column; min-width: 0; padding-top: 1px; }
 .t {
   font: 500 13.5px/1.24 var(--sans); letter-spacing: 0.003em; color: var(--ink);
   max-width: 176px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
@@ -148,14 +148,30 @@ a { color: inherit; }
   text-shadow: 0 0 2px var(--halo), 0 0 6px var(--halo);
   font-variant-numeric: tabular-nums;
 }
-.node:hover, .node:focus-visible { --hover: 1.3; background: rgba(9, 14, 28, 0.72); }
+.node:hover, .node:focus-visible { --hover: 1.3; }
 .node:focus-visible { outline-offset: 0; }
+
+/* A hovered or selected node sits on a card. The card leaves room around the star and a clear
+   window over it, sized to the star's rings, so the star (drawn on the canvas below) stays bright. */
+.node { --hole: calc(max(var(--r) * 2.2px, var(--r) * 1px + 5px) + 1.5px); --card: rgba(9, 14, 28, 0.72); }
+.node.open, .node.claimed { --hole: calc(var(--ring) * 0.5px + 6.5px); }
+.node.open.big, .node.claimed.big { --hole: calc(var(--ring) * 0.5px + 9.5px); }
+.node.sel { --card: rgba(10, 15, 30, 0.88); }
+.node::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle at 24px 24px, transparent var(--hole), var(--card) calc(var(--hole) + 3.5px));
+  opacity: 0; transition: opacity .2s ease;
+}
+.node:hover, .node:focus-visible, .node.sel { margin: -13px 0 0 -15px; padding: 13px 14px 12px 15px; max-width: 236px; }
+.node:hover::before, .node:focus-visible::before, .node.sel::before { opacity: 1; }
 
 .node.open .star-box::after {
   content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px;
   border-radius: 50%; border: 1px solid var(--gold); opacity: 0; pointer-events: none;
-  animation: ping 3.4s ease-out infinite;
+  animation: ping 3.4s ease-out infinite; transition: filter .45s ease;
 }
+/* The ping calls attention to a problem; once it has the reader's attention it fades away. */
+.node.open:hover .star-box::after, .node.open:focus-visible .star-box::after, .node.open.sel .star-box::after { filter: opacity(0); }
 .node.open .t, .node.claimed .t { color: var(--gold-ink); }
 .node.open .m, .node.claimed .m { color: oklch(0.8 0.08 85 / 0.8); }
 @keyframes ping {
@@ -164,7 +180,7 @@ a { color: inherit; }
 }
 
 
-.node.sel { background: rgba(10, 15, 30, 0.88); box-shadow: 0 0 0 1px oklch(0.8 0.1 var(--h) / 0.5), 0 10px 34px -12px var(--glow); --hover: 1.35; }
+.node.sel { box-shadow: 0 0 0 1px oklch(0.8 0.1 var(--h) / 0.5), 0 10px 34px -12px var(--glow); --hover: 1.35; }
 .node.sel .t { font-weight: 600; }
 .node.open.sel, .node.claimed.sel { box-shadow: 0 0 0 1px rgba(242, 196, 109, 0.6), 0 10px 34px -10px var(--gold-glow); }
 
@@ -174,6 +190,7 @@ a { color: inherit; }
 /* far zoom: stars stay, labels yield, except the brightest few */
 .viewport.far .node .label { opacity: 0; }
 .viewport.far .node:hover, .viewport.far .node.sel { background: transparent; box-shadow: none; }
+.viewport.far .node::before { opacity: 0; }
 .viewport.far .node.major .label, .viewport.far .node.sel .label {
   opacity: 1; transform-origin: 0 30%;
 }
