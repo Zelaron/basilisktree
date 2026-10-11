@@ -154,6 +154,10 @@
       n.r = 2.2 + 6.3 * Math.pow(n.imp / 100, 1.25);
       n.ring = 10 + 14 * (n.imp / 100);
       n.big = n.status !== 'known' && (n.grand || n.imp >= 80);
+      // The label starts clear of the star's outermost ring (its selection ring, or a big problem's
+      // halo), with the same space after it for every node.
+      const outer = n.status === 'known' ? n.r + 5 : n.ring / 2 + (n.big ? 8.5 : 5);
+      n.lx = Math.max(LABEL_X, Math.round(STAR_CX + outer + 7));
     }
 
     // the Ledger: everyone credited for a discovery or for progress on a problem
@@ -321,7 +325,7 @@
       el.type = 'button';
       el.className = ['node', n.status !== 'known' && n.status, n.status === 'known' && n.with.length && 'ai', n.big && 'big'].filter(Boolean).join(' ');
       el.dataset.id = n.id;
-      el.style.cssText = `left:${n.x}px;top:${n.y}px;--h:${hueOf(n)};--r:${n.r.toFixed(2)};--ring:${n.ring.toFixed(1)}`;
+      el.style.cssText = `left:${n.x}px;top:${n.y}px;--h:${hueOf(n)};--r:${n.r.toFixed(2)};--ring:${n.ring.toFixed(1)};--gap:${n.lx - 18}px`;
       const status = n.status === 'open' ? 'open problem' : n.status === 'claimed' ? 'claimed result' : '';
       el.setAttribute('aria-label', [n.title, status, metaLine(n)].filter(Boolean).join(', '));
       el.innerHTML = `<span class="star-box"><span class="star"></span></span><span class="label"><span class="t">${esc(n.title)}</span><span class="m">${esc(metaLine(n))}</span></span>`;
@@ -400,7 +404,7 @@
       };
       const fits = (n) => {
         if (n.title.length > (n.big ? 34 : 26)) return false;
-        const box = { x0: n.x - 10, x1: n.x + LABEL_X + ((n.tw || 120) + 10) * scale + 14, y0: n.y - 8 * scale, y1: n.y + 24 * scale };
+        const box = { x0: n.x - 10, x1: n.x + n.lx + ((n.tw || 120) + 10) * scale + 14, y0: n.y - 8 * scale, y1: n.y + 24 * scale };
         if (box.x1 > S.W + NAME_ROOM / k) return false;
         const hit = (key) => (grid.get(key) || []).some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0);
         if (cells(box, hit)) return false;
@@ -447,7 +451,7 @@
 
   function anchor(n, out, far) {
     if (far) return [n.x + STAR_CX, n.y + STAR_CY];
-    if (out) return [n.x + LABEL_X + (n.lw || 120) + 6, n.y + STAR_CY];
+    if (out) return [n.x + n.lx + (n.lw || 120) + 6, n.y + STAR_CY];
     const r = n.status !== 'known' ? n.ring / 2 : n.with.length ? n.r + 4.5 : n.r;
     return [n.x + STAR_CX - r - 3, n.y + STAR_CY];
   }
@@ -746,7 +750,7 @@
           const boxes = [];
           for (const n of [...S.lit].map((id) => S.byId.get(id)).sort((a, b) => b.imp - a.imp)) {
             const sx = x + n.x * k, sy = y + n.y * k;
-            const b = { x0: sx - 4, x1: sx + LABEL_X * k + (n.tw || 120) * 0.78 + 20, y0: sy - 6, y1: sy + 20 };
+            const b = { x0: sx - 4, x1: sx + n.lx * k + (n.tw || 120) * 0.78 + 20, y0: sy - 6, y1: sy + 20 };
             if (boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0)) continue;
             boxes.push(b);
             show.add(n);
@@ -761,7 +765,7 @@
       S.crowded = crowded;
       S.farLabels = [...show];
       const zs = Math.max(1, 0.5 / k);
-      for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
+      for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7 - (n.lx - LABEL_X)).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
     }
     drawCanvas(now);
     updateRuler();

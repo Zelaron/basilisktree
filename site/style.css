@@ -128,10 +128,10 @@ a { color: inherit; }
 .node {
   --c: oklch(0.83 0.11 var(--h));
   --glow: oklch(0.8 0.15 var(--h) / 0.55);
-  position: absolute; display: flex; align-items: flex-start; gap: 6px;
+  position: absolute; display: flex; align-items: flex-start; gap: var(--gap, 6px);
   margin: -4px 0 0 -4px; padding: 4px 10px 5px 4px;
   border: 0; border-radius: 11px; background: transparent; color: var(--ink);
-  text-align: left; cursor: pointer; max-width: 222px;
+  text-align: left; cursor: pointer; max-width: calc(216px + var(--gap, 6px));
   transition: background-color .2s ease, box-shadow .2s ease;
 }
 .star-box { flex: none; width: 18px; height: 22px; display: grid; place-items: center; }
@@ -164,7 +164,7 @@ a { color: inherit; }
 }
 /* Only a lifted node is its own stacking context, so its card sits between it and its label;
    the other 1,700 labels stay plain inline content and repaint cheaply. */
-.node:hover, .node:focus-visible, .node.sel { isolation: isolate; margin: -13px 0 0 -15px; padding: 13px 14px 12px 15px; max-width: 236px; }
+.node:hover, .node:focus-visible, .node.sel { isolation: isolate; margin: -13px 0 0 -15px; padding: 13px 14px 12px 15px; max-width: calc(230px + var(--gap, 6px)); }
 .node:hover::before, .node:focus-visible::before, .node.sel::before { opacity: 1; }
 
 .node.open .t, .node.claimed .t { color: var(--gold-ink); }
