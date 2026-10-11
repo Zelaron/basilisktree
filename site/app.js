@@ -10,6 +10,8 @@
   const STAR_CX = 9, STAR_CY = 11; // star centre relative to a node's origin
   const LABEL_X = 24;            // label's left edge relative to a node's origin
   const FAR_K = 0.5;             // below this zoom, labels give way to stars
+  const NAME_ROOM = 190;         // screen px kept free right of the newest column, for its names
+  const LABEL_DENSITY = 2e-5;    // far-zoom names per square screen px
   const MAX_K = 2.4;
   const RULER_H = 26;
   const ROUTES = new Set(['explore', 'frontier', 'ledger', 'about']);
@@ -21,10 +23,6 @@
   const world = $('#world');
   const lanesEl = $('#lanes');
   const nodesEl = $('#nodes');
-  const svg = $('#edges');
-  const gridG = $('#grid');
-  const baseG = $('#edges-base');
-  const hiG = $('#edges-hi');
   const rulerEl = $('#ruler');
   const stripEl = $('#lane-strip');
   const statusEl = $('#status');
@@ -36,7 +34,6 @@
   const searchResults = $('#search-results');
   const skyCanvas = $('#sky');
   const sky = skyCanvas.getContext('2d');
-  const SVGNS = 'http://www.w3.org/2000/svg';
   const phoneMQ = matchMedia('(max-width: 720px)');
   const motionMQ = matchMedia('(prefers-reduced-motion: reduce)');
   const isPhone = () => phoneMQ.matches;
@@ -329,21 +326,15 @@
     }
     nodesEl.replaceChildren(frag);
 
-    svg.setAttribute('width', S.W);
-    svg.setAttribute('height', S.H);
-    svg.setAttribute('viewBox', `0 0 ${S.W} ${S.H}`);
-    gridG.innerHTML = S.cols
-      .slice(1)
-      .map((c) => `<line x1="${c.x - 20}" y1="${PAD_T}" x2="${c.x - 20}" y2="${S.H - PAD_B}"/>`)
-      .join('');
     for (const e of S.edges) {
-      const path = document.createElementNS(SVGNS, 'path');
-      const to = S.byId.get(e.to);
-      path.setAttribute('class', to.status === 'known' ? 'e' : 'e to-open');
-      path.style.setProperty('--h', hueOf(S.byId.get(e.from)));
-      e.el = path;
+      e.a = S.byId.get(e.from);
+      e.b = S.byId.get(e.to);
+      e.open = e.b.status !== 'known';
+      e.x0 = Math.min(e.a.x, e.b.x) - 20;
+      e.x1 = Math.max(e.a.x + 230, e.b.x + 20);
+      e.y0 = Math.min(e.a.y, e.b.y) - 10;
+      e.y1 = Math.max(e.a.y, e.b.y) + 30;
     }
-    baseG.replaceChildren(...S.edges.map((e) => e.el));
 
     rulerEl.replaceChildren(
       ...S.cols.map((c) => {
@@ -383,34 +374,70 @@
   }
 
   // At far zoom the big open problems keep their names, then the most important discoveries,
-  // chosen round-robin across eras and skipping any label that would collide with one already chosen.
+  // chosen round-robin across eras. Each zoom level gets its own set, sized so the names on screen
+  // stay about as dense at every level, and skipping any name that would collide with one already
+  // chosen at that scale or run past the room kept free right of the newest column.
   function pickMajors() {
-    const k = overview().k;
-    const scale = 0.78 / Math.min(k, FAR_K);
     const segs = 6, nCols = S.cols.length;
     const pools = Array.from({ length: segs }, (_, i) =>
       S.nodes
-        .filter((n) => n.status === 'known' && Math.floor((n.col * segs) / nCols) === i)
+        .filter((n) => !n.big && Math.floor((n.col * segs) / nCols) === i)
         .sort((a, b) => b.imp - a.imp || b.reach - a.reach),
     );
-    const boxes = [];
-    const fits = (n) => {
-      if (n.title.length > (n.big ? 34 : 26)) return false;
-      const box = { x0: n.x - 10, x1: n.x + LABEL_X + ((n.tw || 120) + 10) * scale + 14, y0: n.y - 8 * scale, y1: n.y + 24 * scale };
-      if (boxes.some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) return false;
-      boxes.push(box);
-      return true;
-    };
-    const chosen = new Set();
-    for (const n of S.nodes.filter((m) => m.big).sort((a, b) => b.imp - a.imp)) if (fits(n)) chosen.add(n);
-    const limit = chosen.size + 16;
-    for (let round = 0; round < 4 && chosen.size < limit; round++) {
-      for (const pool of pools) {
-        const n = pool.find((m) => !chosen.has(m) && fits(m));
-        if (n) chosen.add(n);
+    const bigs = S.nodes.filter((n) => n.big).sort((a, b) => b.imp - a.imp);
+    const levels = [];
+    for (let k = FAR_K * 0.8; ; k *= 0.8) {
+      const scale = 0.78 / k, cw = 200 * scale, ch = 40 * scale, grid = new Map();
+      const cells = (b, f) => {
+        for (let i = Math.floor(b.x0 / cw); i <= Math.floor(b.x1 / cw); i++)
+          for (let j = Math.floor(b.y0 / ch); j <= Math.floor(b.y1 / ch); j++) if (f(`${i},${j}`)) return true;
+        return false;
+      };
+      const fits = (n) => {
+        if (n.title.length > (n.big ? 34 : 26)) return false;
+        const box = { x0: n.x - 10, x1: n.x + LABEL_X + ((n.tw || 120) + 10) * scale + 14, y0: n.y - 8 * scale, y1: n.y + 24 * scale };
+        if (box.x1 > S.W + NAME_ROOM / k) return false;
+        const hit = (key) => (grid.get(key) || []).some((b) => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0);
+        if (cells(box, hit)) return false;
+        cells(box, (key) => void (grid.get(key) || grid.set(key, []).get(key)).push(box));
+        return true;
+      };
+      const chosen = [];
+      for (const n of bigs) if (fits(n)) chosen.push(n);
+      const limit = chosen.length + Math.max(16, Math.round(LABEL_DENSITY * S.W * S.H * k * k));
+      const next = pools.map(() => 0);
+      for (let more = true; more && chosen.length < limit; ) {
+        more = false;
+        pools.forEach((pool, i) => {
+          while (next[i] < pool.length && chosen.length < limit) {
+            const n = pool[next[i]++];
+            if (fits(n)) {
+              chosen.push(n);
+              more = true;
+              break;
+            }
+          }
+        });
       }
+      levels.push({ k, nodes: chosen });
+      if (k < S.minK || k < 0.004) break;
     }
-    for (const n of S.nodes) n.el.classList.toggle('major', chosen.has(n));
+    S.majorLevels = levels;
+    S.majors = null;
+    setMajors(majorsAt(S.view.k));
+  }
+  // The names shown at zoom k: the set chosen for the nearest level at or below it.
+  function majorsAt(k) {
+    const L = S.majorLevels || [];
+    return (L.find((l) => l.k <= k) || L[L.length - 1] || { nodes: NO_NODES }).nodes;
+  }
+  const NO_NODES = [];
+  function setMajors(list) {
+    if (list === S.majors) return;
+    const next = new Set(list);
+    for (const n of S.majors || S.nodes) if (!next.has(n)) n.el.classList.remove('major');
+    for (const n of list) n.el.classList.add('major');
+    S.majors = list;
   }
 
   function anchor(n, out, far) {
@@ -419,30 +446,14 @@
     const r = n.status !== 'known' ? n.ring / 2 : n.with.length ? n.r + 4.5 : n.r;
     return [n.x + STAR_CX - r - 3, n.y + STAR_CY];
   }
-  function edgeD(e, far) {
-    const [x1, y1] = anchor(S.byId.get(e.from), true, far);
-    const [x2, y2] = anchor(S.byId.get(e.to), false, far);
-    const c = Math.max(24, (x2 - x1) * 0.5);
-    return `M${x1.toFixed(1)},${y1.toFixed(1)}C${(x1 + c).toFixed(1)},${y1.toFixed(1)} ${(x2 - c).toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
-  }
+  // Lines and highlights are drawn on the canvas each frame; these just ask for a redraw.
   function drawEdges() {
-    const far = S.view.k < FAR_K;
-    for (const e of S.edges) e.el.setAttribute('d', edgeD(e, far));
-    S.edgesFar = far;
-    drawHighlights();
+    S.edgesFar = S.view.k < FAR_K;
+    requestFrame();
   }
   function drawHighlights() {
-    const far = S.view.k < FAR_K;
-    hiG.replaceChildren(
-      ...S.hi.map(([e, cls]) => {
-        const p = document.createElementNS(SVGNS, 'path');
-        const to = S.byId.get(e.to);
-        p.setAttribute('class', to.status === 'known' ? cls : `${cls} to-open`);
-        p.style.setProperty('--h', hueOf(S.byId.get(e.from)));
-        p.setAttribute('d', edgeD(e, far));
-        return p;
-      }),
-    );
+    S.hiAnimated = S.hi.some(([, cls]) => cls === 'hi-up');
+    requestFrame();
   }
 
   // ── sky ─────────────────────────────────────────────────────────────
@@ -468,21 +479,19 @@
     sky.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   const TINTS = ['#ffe3bd', '#c9d7ff', '#eef1ff'];
-  function drawSky() {
-    const w = S.vpW, h = S.vpH;
-    sky.clearRect(0, 0, w, h);
+  function drawSkyStars(w, h) {
     for (const L of S.skyLayers) {
       const ox = mod(S.view.x * L.p, L.tile), oy = mod(S.view.y * L.p, L.tile);
       for (let ti = 0; ti < 3; ti++) {
         sky.fillStyle = TINTS[ti];
         for (let tx = ox - L.tile; tx < w; tx += L.tile) {
           for (let ty = oy - L.tile; ty < h; ty += L.tile) {
-            for (const s of L.stars) {
-              if ((s.tint < 0.14 ? 0 : s.tint < 0.36 ? 1 : 2) !== ti) continue;
-              const x = tx + s.x, y = ty + s.y;
+            for (const st of L.stars) {
+              if ((st.tint < 0.14 ? 0 : st.tint < 0.36 ? 1 : 2) !== ti) continue;
+              const x = tx + st.x, y = ty + st.y;
               if (x < -3 || y < -3 || x > w + 3 || y > h + 3) continue;
-              sky.globalAlpha = s.a;
-              sky.fillRect(x, y, s.s, s.s);
+              sky.globalAlpha = st.a;
+              sky.fillRect(x, y, st.s, st.s);
             }
           }
         }
@@ -491,31 +500,214 @@
     sky.globalAlpha = 1;
   }
 
+  // OKLCH to sRGB, so canvas colours match the stylesheet's oklch() colours.
+  function oklch(L, C, hDeg) {
+    const h = (hDeg * Math.PI) / 180, a = C * Math.cos(h), b = C * Math.sin(h);
+    const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+    const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+    const q = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+    const g = (x) => Math.round(255 * Math.min(1, Math.max(0, x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055)));
+    return [g(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * q), g(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * q), g(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * q)];
+  }
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  const GOLD = [242, 196, 109];
+  function domainColours() {
+    for (const d of S.domains) d.c = { star: oklch(0.83, 0.11, d.hue), edge: oklch(0.78, 0.08, d.hue), hi: oklch(0.86, 0.13, d.hue), down: oklch(0.93, 0.04, d.hue) };
+  }
+
+  function edgePath(c, e, far, toScreen) {
+    const [x1, y1] = anchor(e.a, true, far), [x2, y2] = anchor(e.b, false, far);
+    const d = Math.max(24, (x2 - x1) * 0.5);
+    const [a1, b1] = toScreen(x1, y1), [a2, b2] = toScreen(x1 + d, y1), [a3, b3] = toScreen(x2 - d, y2), [a4, b4] = toScreen(x2, y2);
+    c.moveTo(a1, b1);
+    c.bezierCurveTo(a2, b2, a3, b3, a4, b4);
+  }
+  function sparkle(c, x, y, r) {
+    const q = r * 0.3;
+    c.moveTo(x, y - r);
+    c.lineTo(x + q, y - q);
+    c.lineTo(x + r, y);
+    c.lineTo(x + q, y + q);
+    c.lineTo(x, y + r);
+    c.lineTo(x - q, y + q);
+    c.lineTo(x - r, y);
+    c.lineTo(x - q, y - q);
+    c.closePath();
+  }
+
+  function drawCanvas(now) {
+    const c = sky, w = S.vpW, h = S.vpH;
+    c.clearRect(0, 0, w, h);
+    drawSkyStars(w, h);
+    if (!S.nodes.length || S.edgesFar === undefined) return;
+    const { x: vx, y: vy, k } = S.view;
+    const far = k < FAR_K, grow = Math.max(k, 0.5);
+    const toScreen = (X, Y) => [vx + X * k, vy + Y * k];
+    const m = 80 / k;
+    const X0 = -vx / k - m, X1 = (w - vx) / k + m, Y0 = -vy / k - m, Y1 = (h - vy) / k + m;
+    const lit = S.lit, dim = lit ? (S.selected ? 0.18 : 0.3) : 1;
+
+    // era guides
+    c.lineWidth = 1;
+    c.strokeStyle = 'rgba(170,186,230,0.045)';
+    c.beginPath();
+    for (const col of S.cols) {
+      if (!col.index || col.x < X0 || col.x > X1) continue;
+      const [gx, gy0] = toScreen(col.x - 20, PAD_T), [, gy1] = toScreen(0, S.H - PAD_B);
+      c.moveTo(Math.round(gx) + 0.5, gy0);
+      c.lineTo(Math.round(gx) + 0.5, gy1);
+    }
+    c.stroke();
+
+    // prerequisite lines, batched by colour
+    const groups = new Map();
+    for (const e of S.edges) {
+      if (e.x1 < X0 || e.x0 > X1 || e.y1 < Y0 || e.y0 > Y1) continue;
+      const muted = S.hidden.has(e.a.domain) || S.hidden.has(e.b.domain);
+      const key = (e.open ? 'gold' : e.a.domain) + (muted ? '-m' : '');
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(e);
+    }
+    c.lineWidth = 1.1;
+    for (const [key, list] of groups) {
+      const muted = key.endsWith('-m'), gold = key.startsWith('gold');
+      const col = gold ? GOLD : S.domainById.get(key.replace('-m', '')).c.edge;
+      c.strokeStyle = rgba(col, (gold ? 0.3 : 0.24) * dim * (muted ? 0.12 : 1));
+      c.setLineDash(gold ? [3, 4] : []);
+      c.beginPath();
+      for (const e of list) edgePath(c, e, far, toScreen);
+      c.stroke();
+    }
+    c.setLineDash([]);
+
+    // highlighted lineage
+    if (S.hi.length) {
+      const offset = calm() ? 0 : -((now || 0) / 1000) * 11;
+      for (const [e, cls] of S.hi) {
+        if (e.x1 < X0 || e.x0 > X1 || e.y1 < Y0 || e.y0 > Y1) continue;
+        const dc = S.domainById.get(e.a.domain).c;
+        const col = e.open && cls !== 'hi-down' ? GOLD : cls === 'hi-down' ? dc.down : dc.hi;
+        c.strokeStyle = rgba(col, cls === 'hi-down' ? 0.55 : cls === 'hi-hover' ? 0.8 : 0.95);
+        c.lineWidth = cls === 'hi-up' ? 1.8 : cls === 'hi-hover' ? 1.5 : 1.3;
+        c.setLineDash(cls === 'hi-up' && !calm() ? [7, 5] : []);
+        c.lineDashOffset = offset;
+        c.beginPath();
+        edgePath(c, e, far, toScreen);
+        c.stroke();
+      }
+      c.setLineDash([]);
+      c.lineDashOffset = 0;
+    }
+
+    // stars, rings and sparkles
+    const byDomain = new Map();
+    const rings = [], sparks = [];
+    for (const n of S.nodes) {
+      if (n.x + 40 < X0 || n.x > X1 || n.y + 30 < Y0 || n.y > Y1) continue;
+      if (n.status !== 'known') rings.push(n);
+      else if (n.with.length) sparks.push(n);
+      else {
+        if (!byDomain.has(n.domain)) byDomain.set(n.domain, []);
+        byDomain.get(n.domain).push(n);
+      }
+    }
+    const alphaOf = (n) => (S.hidden.has(n.domain) ? 0.07 : lit && !lit.has(n.id) ? dim : 1);
+    for (const [dom, list] of byDomain) {
+      const col = S.domainById.get(dom).c.star;
+      for (const glow of [true, false]) {
+        for (const a of [...new Set(list.map(alphaOf))]) {
+          c.beginPath();
+          for (const n of list) {
+            if (alphaOf(n) !== a) continue;
+            const [cx, cy] = toScreen(n.x + STAR_CX, n.y + STAR_CY);
+            const r = n.r * grow * (glow ? 2.2 : 1);
+            c.moveTo(cx + r, cy);
+            c.arc(cx, cy, r, 0, Math.PI * 2);
+          }
+          c.fillStyle = rgba(col, glow ? a * 0.16 : a);
+          c.fill();
+        }
+      }
+    }
+    for (const n of sparks) {
+      const [cx, cy] = toScreen(n.x + STAR_CX, n.y + STAR_CY);
+      const col = S.domainById.get(n.domain).c.star;
+      c.beginPath();
+      sparkle(c, cx, cy, (n.r + 4.5) * grow);
+      c.fillStyle = rgba(col, alphaOf(n));
+      c.fill();
+    }
+    for (const n of rings) {
+      const [cx, cy] = toScreen(n.x + STAR_CX, n.y + STAR_CY);
+      const r = (n.ring / 2) * grow, a = alphaOf(n);
+      if (n.big) {
+        c.beginPath();
+        c.arc(cx, cy, r + 8 * grow, 0, Math.PI * 2);
+        c.fillStyle = rgba(GOLD, 0.07 * a);
+        c.fill();
+        c.lineWidth = 1;
+        c.strokeStyle = rgba(GOLD, 0.38 * a);
+        c.stroke();
+      }
+      c.beginPath();
+      c.arc(cx, cy, r, 0, Math.PI * 2);
+      c.fillStyle = rgba(GOLD, 0.08 * a);
+      c.fill();
+      c.lineWidth = 1.5;
+      c.setLineDash(n.status === 'open' ? [2.6, 2] : []);
+      c.strokeStyle = rgba(GOLD, a);
+      c.stroke();
+      c.setLineDash([]);
+      if (n.status === 'claimed') {
+        c.beginPath();
+        c.arc(cx, cy, r * 0.3, 0, Math.PI * 2);
+        c.fillStyle = rgba(GOLD, a);
+        c.fill();
+      }
+    }
+    if (S.selected) {
+      const n = S.selected;
+      const [cx, cy] = toScreen(n.x + STAR_CX, n.y + STAR_CY);
+      const r = (n.status !== 'known' ? n.ring / 2 : n.r) * grow + 5;
+      c.beginPath();
+      c.arc(cx, cy, r, 0, Math.PI * 2);
+      c.lineWidth = 1.2;
+      c.strokeStyle = rgba(n.status !== 'known' ? GOLD : S.domainById.get(n.domain).c.hi, 0.9);
+      c.stroke();
+    }
+  }
+
   // ── view ────────────────────────────────────────────────────────────
   let raf = 0;
   const requestFrame = () => {
     if (!raf) raf = requestAnimationFrame(applyView);
   };
-  function applyView() {
+  function applyView(now) {
     raf = 0;
     const { x, y, k } = S.view;
     world.style.transform = `translate3d(${x}px,${y}px,0) scale(${k})`;
-    // --k drives star and stroke sizes in CSS; restyling every node each frame is costly on big trees,
-    // so while the view is moving only update it on large zoom changes, and settle it afterwards.
-    const dk = Math.abs(k - S.lastK) / k;
-    if (dk > (vpEl.classList.contains('moving') ? 0.25 : 0.004)) {
-      world.style.setProperty('--k', k.toFixed(4));
-      S.lastK = k;
-    }
     const far = k < FAR_K;
     if (far !== S.far) {
       S.far = far;
       vpEl.classList.toggle('far', far);
-      if (S.edgesFar !== undefined && S.edgesFar !== far) drawEdges();
     }
-    drawSky();
+    // Zoomed out, a few labels stay readable: scale those few against the zoom.
+    const show = new Set();
+    if (far) {
+      setMajors(majorsAt(k));
+      const m = 300, wx0 = (-m - x) / k, wx1 = (S.vpW + m - x) / k, wy0 = (-m - y) / k, wy1 = (S.vpH + m - y) / k;
+      for (const n of S.majors) if (n.x > wx0 - (n.tw || 120) / k && n.x < wx1 && n.y > wy0 && n.y < wy1) show.add(n);
+      if (S.person && S.lit) for (const id of S.lit) show.add(S.byId.get(id));
+      if (S.selected) show.add(S.selected);
+    }
+    for (const n of S.farLabels || []) if (!show.has(n)) n.labelEl.style.transform = '';
+    S.farLabels = [...show];
+    const zs = Math.max(1, 0.5 / k);
+    for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
+    drawCanvas(now);
     updateRuler();
     updateStrip();
+    if (S.hiAnimated && !calm()) requestFrame();
   }
 
   let movingTimer = 0;
@@ -571,7 +763,7 @@
   function clampView(v = S.view) {
     const r = visibleRect();
     v.k = clamp(v.k, S.minK, MAX_K);
-    v.x = clampAxis(v.x, S.W * v.k, r.x, r.w);
+    v.x = clampAxis(v.x, S.W * v.k + NAME_ROOM, r.x, r.w);
     v.y = clampAxis(v.y, S.H * v.k, r.y, r.h);
     return v;
   }
@@ -662,22 +854,25 @@
       S.flight = requestAnimationFrame(step);
     });
   }
-  function fitView() {
-    const r = visibleRect();
-    const k = Math.min(r.w / S.W, r.h / S.H);
-    return { k, x: r.x + (r.w - S.W * k) / 2, y: r.y + (r.h - S.H * k) / 2 };
-  }
-  function overview() {
-    // A whole-tree view. On a narrow screen that would be a thin strip, so fit the height instead
-    // and start in deep time.
-    const fit = fitView();
-    if (fit.k >= 0.06) return fit;
+  // The opening view. A small tree fits whole; a big one on a wide screen would be a thin strip,
+  // so fit the height instead and start in deep time (the flight to the frontier then crosses
+  // the whole timeline). With whole set, wide screens get the whole tree, as the ALL button does.
+  function overview(whole = false) {
+    const v = wholeView();
+    if (v.k >= (whole ? 0.03 : 0.06)) return v;
     const r = visibleRect();
     const k = Math.min(0.32, r.h / S.H);
     return { k, x: r.x + 6, y: r.y + (r.h - S.H * k) / 2 };
   }
+  function wholeView() {
+    const r = visibleRect();
+    const k = Math.min((r.w - NAME_ROOM) / S.W, r.h / S.H);
+    return { k, x: r.x + Math.max(16, (r.w - NAME_ROOM - S.W * k) / 2), y: r.y + (r.h - S.H * k) / 2 };
+  }
   function updateMinK() {
-    S.minK = Math.min(fitView().k * 0.9, 0.3);
+    // Far enough out to see the whole tree, panel open or not.
+    const w = S.vpW - S.stripW - (isPhone() ? 0 : panel.offsetWidth + 24) - NAME_ROOM / 2;
+    S.minK = Math.min(0.9 * Math.min(w / S.W, (S.vpH - RULER_H) / S.H), 0.3);
   }
   function nodeView(n, k) {
     return viewCentredOn(n.x + 80, n.y + 14, k);
@@ -705,7 +900,11 @@
 
   // ── selection & highlighting ────────────────────────────────────────
   function setLit(ids) {
-    for (const n of S.nodes) n.el.classList.toggle('lit', !!ids && ids.has(n.id));
+    const prev = S.lit || new Set();
+    S.lit = ids || null;
+    for (const id of prev) if (!ids || !ids.has(id)) S.byId.get(id).el.classList.remove('lit');
+    if (ids) for (const id of ids) if (!prev.has(id)) S.byId.get(id).el.classList.add('lit');
+    requestFrame();
   }
   function select(id, { push = true, fly = 'auto', k, flight } = {}) {
     const n = S.byId.get(id);
@@ -783,7 +982,7 @@
     if (S.hidden.has(id)) S.hidden.delete(id);
     else if (S.hidden.size < S.domains.length - 1) S.hidden.add(id);
     for (const n of S.nodes) n.el.classList.toggle('muted', S.hidden.has(n.domain));
-    for (const e of S.edges) e.el.classList.toggle('muted', S.hidden.has(S.byId.get(e.from).domain) || S.hidden.has(S.byId.get(e.to).domain));
+    requestFrame();
     for (const lane of S.lanes) {
       const off = S.hidden.has(lane.domain.id);
       lane.tag.classList.toggle('off', off);
@@ -992,7 +1191,7 @@
     fit: () => {
       clearSelection();
       if (isPhone()) setSheet('peek');
-      flyTo(overview(), { max: 1800 });
+      flyTo(overview(true), { max: 1800 });
     },
     tab: (el) => {
       clearSelection({ push: false });
@@ -1418,6 +1617,7 @@
       setSheet(S.sheet, { instant: true });
     } else panel.style.removeProperty('--sheet-y');
     updateMinK();
+    pickMajors();
     Object.assign(S.view, clampView(viewCentredOn(cx, cy, S.view.k)));
     requestFrame();
   }
@@ -1443,6 +1643,7 @@
     measureViewport();
     buildSky();
     sizeSky();
+    domainColours();
     if (isPhone()) {
       computeSheetStops();
       setSheet('peek', { instant: true });
