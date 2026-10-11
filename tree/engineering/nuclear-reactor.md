@@ -1,5 +1,6 @@
 ---
 title: Nuclear Reactor
+importance: 80
 year: 1942
 requires: [nuclear-fission]
 by: [Enrico Fermi, Leo Szilard]

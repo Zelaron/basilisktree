@@ -1,5 +1,6 @@
 ---
 title: Microprocessor
+importance: 90
 year: 1971
 requires: [integrated-circuit, electronic-computer]
 by: [Federico Faggin, Ted Hoff, Stanley Mazor, Masatoshi Shima]

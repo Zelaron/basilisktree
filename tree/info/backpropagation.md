@@ -1,5 +1,6 @@
 ---
 title: Backpropagation
+importance: 80
 year: 1986
 requires: [perceptron, calculus]
 by: [David Rumelhart, Geoffrey Hinton, Ronald Williams]

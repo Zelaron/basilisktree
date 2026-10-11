@@ -1,5 +1,6 @@
 ---
 title: AlphaEvolve
+importance: 58
 year: 2025
 requires: [funsearch, alphatensor]
 by: [Google DeepMind]

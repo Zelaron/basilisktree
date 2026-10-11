@@ -1,5 +1,6 @@
 ---
 title: X-ray Crystallography
+importance: 76
 year: 1912
 requires: [x-rays, atomic-theory]
 by: [Max von Laue, William Henry Bragg, William Lawrence Bragg]

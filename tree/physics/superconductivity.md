@@ -1,5 +1,6 @@
 ---
 title: Superconductivity
+importance: 70
 year: 1911
 requires: [electromagnetism, thermodynamics]
 by: [Heike Kamerlingh Onnes]

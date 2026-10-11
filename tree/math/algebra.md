@@ -1,5 +1,6 @@
 ---
 title: Algebra
+importance: 88
 year: 820
 circa: true
 requires: [zero]

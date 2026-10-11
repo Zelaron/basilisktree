@@ -1,5 +1,6 @@
 ---
 title: Linear Algebra
+importance: 88
 year: 1858
 requires: [algebra, analytic-geometry]
 by: [Hermann Grassmann, Arthur Cayley]

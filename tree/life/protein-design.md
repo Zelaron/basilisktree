@@ -1,5 +1,6 @@
 ---
 title: Protein Design
+importance: 64
 year: 2003
 requires: [protein-structure, electronic-computer]
 by: [David Baker]

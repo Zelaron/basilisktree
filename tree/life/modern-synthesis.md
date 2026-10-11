@@ -1,5 +1,6 @@
 ---
 title: Modern Synthesis
+importance: 70
 year: 1930
 requires: [evolution, genetics, statistics]
 by: [Ronald Fisher, J. B. S. Haldane, Sewall Wright]

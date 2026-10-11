@@ -1,7 +1,8 @@
 ---
 title: Heliocentrism
+importance: 80
 year: 1543
-requires: [trigonometry]
+requires: [trigonometry, tusi-couple]
 by: [Nicolaus Copernicus]
 links:
   - https://en.wikipedia.org/wiki/Copernican_heliocentrism

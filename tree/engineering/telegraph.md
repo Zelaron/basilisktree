@@ -1,5 +1,6 @@
 ---
 title: Electric Telegraph
+importance: 84
 year: 1837
 requires: [electromagnetism]
 by: [Samuel Morse, William Fothergill Cooke, Charles Wheatstone]

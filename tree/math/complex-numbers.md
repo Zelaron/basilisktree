@@ -1,5 +1,6 @@
 ---
 title: Complex Numbers
+importance: 80
 year: 1572
 requires: [algebra]
 by: [Gerolamo Cardano, Rafael Bombelli]

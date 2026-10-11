@@ -1,7 +1,8 @@
 ---
 title: Graph Theory
+importance: 76
 year: 1736
-requires: []
+requires: [geometry]
 by: [Leonhard Euler]
 aliases: [networks, Königsberg]
 links:

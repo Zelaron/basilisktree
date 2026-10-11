@@ -1,5 +1,6 @@
 ---
 title: Analytic Geometry
+importance: 86
 year: 1637
 requires: [algebra, geometry]
 by: [René Descartes, Pierre de Fermat]

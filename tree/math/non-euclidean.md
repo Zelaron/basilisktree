@@ -1,5 +1,6 @@
 ---
 title: Non-Euclidean Geometry
+importance: 74
 year: 1829
 requires: [geometry]
 by: [Nikolai Lobachevsky, János Bolyai, Carl Friedrich Gauss]

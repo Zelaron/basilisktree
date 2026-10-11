@@ -1,5 +1,6 @@
 ---
 title: Wheel
+importance: 96
 year: -3500
 circa: true
 requires: [pottery]

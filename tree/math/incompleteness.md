@@ -1,5 +1,6 @@
 ---
 title: Incompleteness Theorems
+importance: 76
 year: 1931
 requires: [formal-logic]
 by: [Kurt Gödel]

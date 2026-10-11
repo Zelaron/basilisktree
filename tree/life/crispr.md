@@ -1,5 +1,6 @@
 ---
 title: CRISPR Gene Editing
+importance: 78
 year: 2012
 requires: [recombinant-dna, dna-sequencing]
 by: [Jennifer Doudna, Emmanuelle Charpentier]

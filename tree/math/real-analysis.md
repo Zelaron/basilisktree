@@ -1,5 +1,6 @@
 ---
 title: Rigorous Analysis
+importance: 76
 year: 1821
 requires: [calculus]
 by: [Augustin-Louis Cauchy, Karl Weierstrass, Richard Dedekind]

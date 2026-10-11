@@ -1,5 +1,6 @@
 ---
 title: Connectomics
+importance: 56
 year: 1986
 requires: [neuron-doctrine, electron-microscope]
 by: [John White, Sydney Brenner]

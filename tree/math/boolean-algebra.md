@@ -1,5 +1,6 @@
 ---
 title: Boolean Logic
+importance: 84
 year: 1854
 requires: [algebra]
 by: [George Boole]

@@ -1,5 +1,6 @@
 ---
 title: Information Theory
+importance: 88
 year: 1948
 requires: [probability, radio]
 by: [Claude Shannon]

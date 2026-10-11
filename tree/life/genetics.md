@@ -1,7 +1,8 @@
 ---
 title: Mendelian Inheritance
+importance: 88
 year: 1866
-requires: []
+requires: [probability, agriculture]
 by: [Gregor Mendel]
 aliases: [genes, heredity]
 links:

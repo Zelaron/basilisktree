@@ -1,5 +1,6 @@
 ---
 title: Trigonometry
+importance: 84
 year: -140
 circa: true
 requires: [geometry, astronomy]

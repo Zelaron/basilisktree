@@ -1,5 +1,6 @@
 ---
 title: Expanding Universe
+importance: 80
 year: 1929
 requires: [general-relativity, telescope]
 by: [Georges Lemaître, Edwin Hubble]

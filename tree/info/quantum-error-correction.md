@@ -1,5 +1,6 @@
 ---
 title: Quantum Error Correction
+importance: 66
 year: 1995
 requires: [quantum-computing, information-theory]
 by: [Peter Shor, Andrew Steane, Alexei Kitaev]

@@ -1,5 +1,6 @@
 ---
 title: DNA Sequencing
+importance: 84
 year: 1977
 requires: [genetic-code]
 by: [Frederick Sanger, Walter Gilbert]

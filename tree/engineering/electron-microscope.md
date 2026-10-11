@@ -1,5 +1,6 @@
 ---
 title: Electron Microscope
+importance: 74
 year: 1931
 requires: [electron, optics]
 by: [Ernst Ruska, Max Knoll]

@@ -1,5 +1,6 @@
 ---
 title: Pottery
+importance: 88
 year: -18000
 circa: true
 requires: [fire]

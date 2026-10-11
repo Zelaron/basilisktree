@@ -1,5 +1,6 @@
 ---
 title: Atomic Clock
+importance: 72
 year: 1955
 requires: [quantum-mechanics]
 by: [Louis Essen, Jack Parry]

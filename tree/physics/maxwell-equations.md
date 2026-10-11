@@ -1,5 +1,6 @@
 ---
 title: Maxwell's Equations
+importance: 92
 year: 1865
 requires: [electromagnetism, pdes]
 by: [James Clerk Maxwell]

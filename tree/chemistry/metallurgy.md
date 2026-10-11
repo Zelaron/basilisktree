@@ -1,5 +1,6 @@
 ---
 title: Metallurgy
+importance: 98
 year: -5000
 circa: true
 requires: [fire, pottery]

@@ -1,5 +1,6 @@
 ---
 title: Reinforcement Learning
+importance: 74
 year: 1988
 requires: [probability, electronic-computer]
 by: [Richard Sutton, Andrew Barto, Chris Watkins]

@@ -1,5 +1,6 @@
 ---
 title: Cellular Reprogramming
+importance: 68
 year: 2006
 requires: [genetic-code, recombinant-dna]
 by: [Shinya Yamanaka, John Gurdon]

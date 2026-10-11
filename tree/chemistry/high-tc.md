@@ -1,5 +1,6 @@
 ---
 title: High-Temperature Superconductors
+importance: 62
 year: 1986
 requires: [superconductivity, periodic-table]
 by: [Georg Bednorz, K. Alex Müller]

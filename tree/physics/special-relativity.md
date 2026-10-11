@@ -1,5 +1,6 @@
 ---
 title: Special Relativity
+importance: 86
 year: 1905
 requires: [maxwell-equations, classical-mechanics]
 by: [Albert Einstein, Hendrik Lorentz, Henri Poincaré]

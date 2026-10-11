@@ -1,5 +1,6 @@
 ---
 title: Optics
+importance: 74
 year: 1021
 circa: true
 requires: [geometry, glass]

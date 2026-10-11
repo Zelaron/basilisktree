@@ -1,5 +1,6 @@
 ---
 title: Predicate Logic
+importance: 78
 year: 1879
 requires: [boolean-algebra]
 by: [Gottlob Frege]

@@ -1,5 +1,6 @@
 ---
 title: Haber–Bosch Process
+importance: 92
 year: 1909
 requires: [thermodynamics, atomic-theory]
 by: [Fritz Haber, Carl Bosch]

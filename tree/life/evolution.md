@@ -1,7 +1,8 @@
 ---
 title: Evolution by Natural Selection
+importance: 94
 year: 1859
-requires: []
+requires: [deep-time, extinction, animal-domestication]
 by: [Charles Darwin, Alfred Russel Wallace]
 aliases: [natural selection, Darwin]
 quote:

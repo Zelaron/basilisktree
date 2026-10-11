@@ -1,7 +1,8 @@
 ---
 title: Polymers
+importance: 82
 year: 1920
-requires: [organic-chemistry]
+requires: [organic-chemistry, vulcanization, semi-synthetic-plastics]
 by: [Hermann Staudinger, Wallace Carothers]
 aliases: [plastics, nylon, macromolecules]
 links:

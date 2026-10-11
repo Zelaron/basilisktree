@@ -1,5 +1,6 @@
 ---
 title: Poincaré Conjecture
+importance: 62
 year: 2003
 posed: 1904
 requires: [topology, differential-geometry, pdes]

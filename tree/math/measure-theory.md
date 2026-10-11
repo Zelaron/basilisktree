@@ -1,5 +1,6 @@
 ---
 title: Measure & Integration
+importance: 70
 year: 1902
 requires: [real-analysis, set-theory]
 by: [Henri Lebesgue, Émile Borel]

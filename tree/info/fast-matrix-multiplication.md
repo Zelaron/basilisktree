@@ -1,5 +1,6 @@
 ---
 title: Strassen's Algorithm
+importance: 54
 year: 1969
 requires: [linear-algebra, electronic-computer]
 by: [Volker Strassen]

@@ -1,5 +1,6 @@
 ---
 title: Riemannian Geometry
+importance: 78
 year: 1854
 requires: [calculus, non-euclidean]
 by: [Carl Friedrich Gauss, Bernhard Riemann]

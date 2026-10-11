@@ -1,5 +1,6 @@
 ---
 title: Integrated Circuit
+importance: 92
 year: 1958
 requires: [transistor]
 by: [Jack Kilby, Robert Noyce]

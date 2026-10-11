@@ -1,5 +1,6 @@
 ---
 title: Topology
+importance: 80
 year: 1895
 requires: [set-theory, group-theory]
 by: [Henri Poincaré, Felix Hausdorff]

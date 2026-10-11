@@ -1,5 +1,6 @@
 ---
 title: Artificial Neuron
+importance: 64
 year: 1943
 requires: [boolean-algebra, neuron-doctrine]
 by: [Warren McCulloch, Walter Pitts]

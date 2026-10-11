@@ -1,5 +1,6 @@
 ---
 title: Bitcoin
+importance: 64
 year: 2008
 requires: [public-key-crypto, internet]
 by: [Satoshi Nakamoto]

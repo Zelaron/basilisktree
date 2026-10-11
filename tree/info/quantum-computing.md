@@ -1,5 +1,6 @@
 ---
 title: Quantum Computation
+importance: 72
 year: 1985
 requires: [quantum-mechanics, turing-machine]
 by: [Richard Feynman, David Deutsch]

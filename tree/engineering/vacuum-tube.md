@@ -1,5 +1,6 @@
 ---
 title: Vacuum Tube
+importance: 80
 year: 1906
 requires: [electron, radio]
 by: [John Ambrose Fleming, Lee de Forest]

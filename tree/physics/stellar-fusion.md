@@ -1,5 +1,6 @@
 ---
 title: Fusion in Stars
+importance: 72
 year: 1939
 requires: [nuclear-physics, quantum-mechanics]
 by: [Hans Bethe]

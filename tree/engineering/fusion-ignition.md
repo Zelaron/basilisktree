@@ -1,5 +1,6 @@
 ---
 title: Fusion Ignition
+importance: 62
 year: 2022
 requires: [stellar-fusion, laser]
 by: [Lawrence Livermore National Laboratory]

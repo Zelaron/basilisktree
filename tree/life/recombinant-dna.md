@@ -1,5 +1,6 @@
 ---
 title: Recombinant DNA
+importance: 84
 year: 1973
 requires: [genetic-code]
 by: [Stanley Cohen, Herbert Boyer, Paul Berg]

@@ -1,5 +1,6 @@
 ---
 title: Turing Machines
+importance: 88
 year: 1936
 requires: [formal-logic, incompleteness]
 by: [Alan Turing, Alonzo Church]

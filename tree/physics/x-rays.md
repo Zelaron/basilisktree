@@ -1,5 +1,6 @@
 ---
 title: X-rays
+importance: 76
 year: 1895
 requires: [electromagnetism]
 by: [Wilhelm Röntgen]

@@ -1,5 +1,6 @@
 ---
 title: Statistical Inference
+importance: 86
 year: 1922
 requires: [probability, calculus]
 by: [Carl Friedrich Gauss, Ronald Fisher]

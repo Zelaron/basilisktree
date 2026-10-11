@@ -1,5 +1,6 @@
 ---
 title: Scientific Method
+importance: 93
 year: 1620
 requires: [printing-press]
 by: [Francis Bacon, Galileo Galilei]

@@ -1,5 +1,6 @@
 ---
 title: Stone Tools
+importance: 100
 year: -3300000
 circa: true
 requires: []

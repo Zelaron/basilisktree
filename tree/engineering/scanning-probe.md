@@ -1,5 +1,6 @@
 ---
 title: Scanning Tunneling Microscope
+importance: 62
 year: 1981
 requires: [quantum-mechanics]
 by: [Gerd Binnig, Heinrich Rohrer]

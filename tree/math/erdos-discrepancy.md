@@ -1,5 +1,6 @@
 ---
 title: Erdős Discrepancy Problem
+importance: 42
 year: 2015
 requires: [probabilistic-method, fourier-analysis, prime-number-theorem]
 by: [Terence Tao]

@@ -1,5 +1,6 @@
 ---
 title: Simple Machines
+importance: 90
 year: -250
 circa: true
 requires: [wheel, geometry]

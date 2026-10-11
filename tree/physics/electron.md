@@ -1,5 +1,6 @@
 ---
 title: The Electron
+importance: 80
 year: 1897
 requires: [electromagnetism, atomic-theory]
 by: [J. J. Thomson]

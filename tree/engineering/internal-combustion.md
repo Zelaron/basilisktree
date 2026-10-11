@@ -1,5 +1,6 @@
 ---
 title: Internal Combustion Engine
+importance: 90
 year: 1876
 requires: [thermodynamics, steam-engine]
 by: [Nicolaus Otto, Rudolf Diesel]

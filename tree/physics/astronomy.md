@@ -1,5 +1,6 @@
 ---
 title: Mathematical Astronomy
+importance: 62
 year: -500
 circa: true
 requires: [arithmetic]

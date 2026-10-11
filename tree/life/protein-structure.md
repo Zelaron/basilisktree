@@ -1,5 +1,6 @@
 ---
 title: Protein Structure
+importance: 72
 year: 1958
 requires: [x-ray-crystallography, organic-chemistry]
 by: [John Kendrew, Max Perutz]

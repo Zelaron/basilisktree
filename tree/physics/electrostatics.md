@@ -1,5 +1,6 @@
 ---
 title: Electrostatics
+importance: 70
 year: 1785
 requires: [classical-mechanics]
 by: [Benjamin Franklin, Charles-Augustin de Coulomb]

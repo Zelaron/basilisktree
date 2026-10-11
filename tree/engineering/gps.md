@@ -1,5 +1,6 @@
 ---
 title: GPS
+importance: 76
 year: 1995
 requires: [spaceflight, atomic-clock, general-relativity]
 by: [Bradford Parkinson, Ivan Getting, Roger Easton]

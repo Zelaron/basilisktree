@@ -1,5 +1,6 @@
 ---
 title: Electric Power Grid
+importance: 94
 year: 1882
 requires: [electromagnetism]
 by: [Thomas Edison, Nikola Tesla, George Westinghouse]

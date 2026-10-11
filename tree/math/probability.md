@@ -1,5 +1,6 @@
 ---
 title: Probability
+importance: 88
 year: 1654
 requires: [arithmetic]
 by: [Blaise Pascal, Pierre de Fermat]

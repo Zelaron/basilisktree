@@ -1,7 +1,8 @@
 ---
 title: Modern Chemistry
+importance: 88
 year: 1789
-requires: [metallurgy]
+requires: [metallurgy, oxygen]
 by: [Antoine Lavoisier]
 aliases: [conservation of mass, oxygen, chemical elements]
 links:

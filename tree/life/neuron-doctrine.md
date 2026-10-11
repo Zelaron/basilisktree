@@ -1,5 +1,6 @@
 ---
 title: Neuron Doctrine
+importance: 74
 year: 1888
 requires: [cell-theory]
 by: [Santiago Ramón y Cajal, Camillo Golgi]

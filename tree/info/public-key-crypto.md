@@ -1,5 +1,6 @@
 ---
 title: Public-Key Cryptography
+importance: 84
 year: 1976
 requires: [modular-arithmetic, complexity-theory]
 by: [Whitfield Diffie, Martin Hellman, Ron Rivest, Adi Shamir, Leonard Adleman]

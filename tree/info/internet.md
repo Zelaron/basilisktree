@@ -2,9 +2,9 @@
 title: Internet
 importance: 93
 year: 1974
-requires: [electronic-computer, information-theory]
+requires: [electronic-computer, information-theory, packet-switching]
 by: [Vint Cerf, Bob Kahn]
-aliases: [TCP/IP, ARPANET, packet switching]
+aliases: [TCP/IP, ARPANET]
 links:
   - https://en.wikipedia.org/wiki/Internet_protocol_suite
 ---

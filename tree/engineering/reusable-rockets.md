@@ -1,5 +1,6 @@
 ---
 title: Reusable Orbital Rockets
+importance: 64
 year: 2015
 requires: [spaceflight, microprocessor]
 by: [SpaceX]

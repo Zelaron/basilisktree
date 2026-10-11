@@ -1,5 +1,6 @@
 ---
 title: Functional Analysis
+importance: 74
 year: 1910
 circa: true
 requires: [linear-algebra, measure-theory, fourier-analysis]

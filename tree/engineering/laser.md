@@ -1,5 +1,6 @@
 ---
 title: Laser
+importance: 82
 year: 1960
 requires: [quantum-mechanics]
 by: [Theodore Maiman, Charles Townes, Arthur Schawlow]

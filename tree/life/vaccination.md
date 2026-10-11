@@ -2,7 +2,7 @@
 title: Vaccination
 importance: 93
 year: 1796
-requires: []
+requires: [variolation]
 by: [Edward Jenner]
 links:
   - https://en.wikipedia.org/wiki/Smallpox_vaccine

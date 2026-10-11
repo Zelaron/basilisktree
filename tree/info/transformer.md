@@ -1,5 +1,6 @@
 ---
 title: Transformer
+importance: 84
 year: 2017
 requires: [deep-learning]
 by: [Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan Gomez, Łukasz Kaiser, Illia Polosukhin]

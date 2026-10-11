@@ -1,5 +1,6 @@
 ---
 title: AlphaFold
+importance: 76
 year: 2020
 requires: [protein-structure, deep-learning]
 by: [John Jumper, Demis Hassabis, Google DeepMind]

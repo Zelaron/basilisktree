@@ -1,5 +1,6 @@
 ---
 title: Riemann Zeta Function
+importance: 68
 year: 1859
 requires: [complex-analysis, primes]
 by: [Bernhard Riemann]

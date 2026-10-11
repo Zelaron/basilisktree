@@ -1,7 +1,8 @@
 ---
 title: Lithium-Ion Battery
+importance: 82
 year: 1991
-requires: [battery, quantum-chemistry]
+requires: [battery, sei-concept]
 by: [M. Stanley Whittingham, John B. Goodenough, Akira Yoshino]
 links:
   - https://en.wikipedia.org/wiki/Lithium-ion_battery

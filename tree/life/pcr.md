@@ -1,5 +1,6 @@
 ---
 title: PCR
+importance: 78
 year: 1983
 requires: [genetic-code]
 by: [Kary Mullis]

@@ -1,5 +1,6 @@
 ---
 title: AI Olympiad Gold
+importance: 60
 year: 2025
 requires: [reasoning-models, alphaproof]
 by: [Google DeepMind, OpenAI]

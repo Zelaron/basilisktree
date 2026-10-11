@@ -1,5 +1,6 @@
 ---
 title: AI Olympiad Silver
+importance: 55
 year: 2024
 requires: [lean-mathlib, reinforcement-learning, large-language-models]
 by: [Google DeepMind]

@@ -1,5 +1,6 @@
 ---
 title: Proof Assistants
+importance: 62
 year: 1967
 requires: [formal-logic, programming-languages]
 by: [N. G. de Bruijn]

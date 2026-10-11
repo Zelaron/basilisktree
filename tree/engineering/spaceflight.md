@@ -1,5 +1,6 @@
 ---
 title: Orbital Spaceflight
+importance: 84
 year: 1957
 requires: [rocketry, radio]
 by: [Sergei Korolev]

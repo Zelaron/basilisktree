@@ -1,7 +1,8 @@
 ---
 title: Organic Chemistry
+importance: 84
 year: 1858
-requires: [atomic-theory]
+requires: [atomic-theory, valence, isomerism]
 by: [Friedrich Wöhler, August Kekulé]
 aliases: [structural formula, benzene]
 links:

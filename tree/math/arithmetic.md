@@ -1,5 +1,6 @@
 ---
 title: Arithmetic
+importance: 98
 year: -1800
 circa: true
 requires: [counting, writing]

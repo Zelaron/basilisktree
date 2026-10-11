@@ -1,5 +1,6 @@
 ---
 title: Shor's Algorithm
+importance: 64
 year: 1994
 requires: [quantum-computing, fourier-analysis, modular-arithmetic]
 by: [Peter Shor]

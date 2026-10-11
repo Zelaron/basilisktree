@@ -1,5 +1,6 @@
 ---
 title: Electric Battery
+importance: 86
 year: 1800
 requires: [electrostatics, chemical-elements]
 by: [Alessandro Volta]

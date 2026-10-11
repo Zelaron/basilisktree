@@ -1,5 +1,6 @@
 ---
 title: Group Theory
+importance: 82
 year: 1832
 requires: [algebra]
 by: [Évariste Galois, Niels Henrik Abel]

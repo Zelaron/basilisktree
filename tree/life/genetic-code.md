@@ -1,5 +1,6 @@
 ---
 title: Genetic Code
+importance: 86
 year: 1961
 requires: [dna-structure]
 by: [Marshall Nirenberg, Har Gobind Khorana, Francis Crick]

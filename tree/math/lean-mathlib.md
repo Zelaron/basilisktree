@@ -1,5 +1,6 @@
 ---
 title: Lean & Mathlib
+importance: 58
 year: 2017
 requires: [proof-assistants]
 by: [Leonardo de Moura, Mathlib community]

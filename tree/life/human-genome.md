@@ -1,5 +1,6 @@
 ---
 title: Human Genome
+importance: 80
 year: 2003
 requires: [dna-sequencing, pcr, electronic-computer]
 by: [Human Genome Project, Celera Genomics]

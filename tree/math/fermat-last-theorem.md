@@ -1,5 +1,6 @@
 ---
 title: Fermat's Last Theorem
+importance: 65
 year: 1995
 posed: 1637
 requires: [elliptic-curves, algebraic-geometry]

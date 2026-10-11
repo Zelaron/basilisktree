@@ -1,5 +1,6 @@
 ---
 title: Abstract Algebra
+importance: 74
 year: 1921
 requires: [group-theory, linear-algebra]
 by: [Emmy Noether]

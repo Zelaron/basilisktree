@@ -1,7 +1,8 @@
 ---
 title: Atomic Theory
+importance: 88
 year: 1808
-requires: [chemical-elements]
+requires: [chemical-elements, definite-proportions]
 by: [John Dalton]
 links:
   - https://en.wikipedia.org/wiki/Atomic_theory

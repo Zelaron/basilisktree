@@ -1,5 +1,6 @@
 ---
 title: Particle Accelerators
+importance: 66
 year: 1932
 requires: [electromagnetism, special-relativity]
 by: [Ernest Lawrence]

@@ -1,5 +1,6 @@
 ---
 title: Standard Model
+importance: 82
 year: 1973
 requires: [qft, group-theory]
 by: [Sheldon Glashow, Steven Weinberg, Abdus Salam, David Gross, Frank Wilczek, David Politzer]

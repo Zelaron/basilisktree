@@ -1,5 +1,6 @@
 ---
 title: Statistical Mechanics
+importance: 78
 year: 1877
 requires: [thermodynamics, probability, atomic-theory]
 by: [James Clerk Maxwell, Ludwig Boltzmann, J. Willard Gibbs]

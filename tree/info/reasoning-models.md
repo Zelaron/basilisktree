@@ -1,5 +1,6 @@
 ---
 title: Reasoning Models
+importance: 76
 year: 2024
 requires: [large-language-models, reinforcement-learning]
 by: [OpenAI, DeepSeek]

@@ -1,5 +1,6 @@
 ---
 title: FunSearch
+importance: 52
 year: 2023
 requires: [large-language-models, additive-combinatorics]
 by: [Google DeepMind]

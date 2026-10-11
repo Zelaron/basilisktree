@@ -1,5 +1,6 @@
 ---
 title: Cell Theory
+importance: 88
 year: 1839
 requires: [microscope]
 by: [Matthias Schleiden, Theodor Schwann, Rudolf Virchow]

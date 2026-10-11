@@ -1,5 +1,6 @@
 ---
 title: mRNA Vaccines
+importance: 78
 year: 2020
 requires: [vaccination, genetic-code]
 by: [Katalin Karikó, Drew Weissman]

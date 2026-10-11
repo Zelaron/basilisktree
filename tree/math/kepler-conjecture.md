@@ -1,5 +1,6 @@
 ---
 title: Kepler Conjecture
+importance: 45
 year: 1998
 posed: 1611
 requires: [geometry, electronic-computer]

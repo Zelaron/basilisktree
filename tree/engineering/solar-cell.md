@@ -1,5 +1,6 @@
 ---
 title: Silicon Solar Cell
+importance: 82
 year: 1954
 requires: [band-theory, quanta]
 by: [Daryl Chapin, Calvin Fuller, Gerald Pearson]

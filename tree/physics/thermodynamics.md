@@ -1,5 +1,6 @@
 ---
 title: Thermodynamics
+importance: 90
 year: 1824
 requires: [steam-engine, calculus]
 by: [Sadi Carnot, Rudolf Clausius, William Thomson]

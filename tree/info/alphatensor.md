@@ -1,5 +1,6 @@
 ---
 title: AlphaTensor
+importance: 48
 year: 2022
 requires: [reinforcement-learning, fast-matrix-multiplication]
 by: [Google DeepMind]

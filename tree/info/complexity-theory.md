@@ -1,5 +1,6 @@
 ---
 title: NP-Completeness
+importance: 76
 year: 1971
 requires: [turing-machine]
 by: [Stephen Cook, Leonid Levin, Richard Karp]

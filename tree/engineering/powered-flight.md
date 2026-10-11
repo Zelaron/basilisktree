@@ -1,5 +1,6 @@
 ---
 title: Powered Flight
+importance: 88
 year: 1903
 requires: [internal-combustion, fluid-dynamics]
 by: [Wilbur Wright, Orville Wright]

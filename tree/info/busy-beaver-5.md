@@ -1,5 +1,6 @@
 ---
 title: Busy Beaver BB(5)
+importance: 38
 year: 2024
 posed: 1962
 requires: [turing-machine, proof-assistants]

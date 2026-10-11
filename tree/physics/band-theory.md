@@ -1,5 +1,6 @@
 ---
 title: Band Theory of Solids
+importance: 78
 year: 1928
 requires: [quantum-mechanics]
 by: [Felix Bloch, Alan Herries Wilson]

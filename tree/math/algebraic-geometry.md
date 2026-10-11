@@ -1,5 +1,6 @@
 ---
 title: Scheme Theory
+importance: 68
 year: 1960
 requires: [abstract-algebra, topology]
 by: [Alexander Grothendieck]

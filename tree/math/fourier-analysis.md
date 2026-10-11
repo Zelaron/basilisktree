@@ -1,5 +1,6 @@
 ---
 title: Fourier Analysis
+importance: 78
 year: 1822
 requires: [pdes, trigonometry]
 by: [Joseph Fourier]

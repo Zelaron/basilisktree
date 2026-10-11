@@ -1,5 +1,6 @@
 ---
 title: Quantum Field Theory
+importance: 80
 year: 1948
 requires: [quantum-mechanics, special-relativity]
 by: [Richard Feynman, Julian Schwinger, Sin-Itiro Tomonaga, Freeman Dyson]

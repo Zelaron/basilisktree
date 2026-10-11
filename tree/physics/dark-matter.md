@@ -4,7 +4,7 @@ status: open
 importance: 80
 grand: true
 posed: 1933
-requires: [general-relativity, standard-model]
+requires: [general-relativity, standard-model, galaxy-rotation-curves]
 links:
   - https://en.wikipedia.org/wiki/Dark_matter
 ---

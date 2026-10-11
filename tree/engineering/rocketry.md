@@ -1,5 +1,6 @@
 ---
 title: Liquid-Fuel Rocket
+importance: 78
 year: 1926
 requires: [classical-mechanics, thermodynamics]
 by: [Konstantin Tsiolkovsky, Robert Goddard]

@@ -1,5 +1,6 @@
 ---
 title: Gravitational Waves
+importance: 68
 year: 2015
 requires: [general-relativity, laser]
 by: [Rainer Weiss, Kip Thorne, Barry Barish, LIGO Scientific Collaboration]

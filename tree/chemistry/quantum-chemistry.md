@@ -1,5 +1,6 @@
 ---
 title: Quantum Chemistry
+importance: 74
 year: 1927
 requires: [quantum-mechanics, periodic-table]
 by: [Walter Heitler, Fritz London, Linus Pauling]

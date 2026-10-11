@@ -1,5 +1,6 @@
 ---
 title: Switching Circuits
+importance: 78
 year: 1937
 requires: [boolean-algebra, telegraph]
 by: [Claude Shannon]

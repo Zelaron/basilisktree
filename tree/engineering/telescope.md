@@ -1,5 +1,6 @@
 ---
 title: Telescope
+importance: 88
 year: 1608
 requires: [optics]
 by: [Hans Lipperhey, Galileo Galilei]

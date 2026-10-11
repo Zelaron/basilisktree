@@ -1,5 +1,6 @@
 ---
 title: Set Theory
+importance: 78
 year: 1874
 requires: [real-analysis]
 by: [Georg Cantor, Ernst Zermelo]

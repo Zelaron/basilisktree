@@ -1,5 +1,6 @@
 ---
 title: Four Color Theorem
+importance: 52
 year: 1976
 posed: 1852
 requires: [graph-theory, electronic-computer]

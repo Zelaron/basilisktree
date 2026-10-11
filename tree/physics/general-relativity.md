@@ -1,5 +1,6 @@
 ---
 title: General Relativity
+importance: 84
 year: 1915
 requires: [special-relativity, differential-geometry]
 by: [Albert Einstein]

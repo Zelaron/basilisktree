@@ -1,5 +1,6 @@
 ---
 title: Infinitude of Primes
+importance: 72
 year: -300
 circa: true
 requires: [arithmetic]

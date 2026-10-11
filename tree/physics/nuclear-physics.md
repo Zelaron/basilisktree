@@ -1,5 +1,6 @@
 ---
 title: Radioactivity & the Nucleus
+importance: 82
 year: 1911
 requires: [electron]
 by: [Henri Becquerel, Marie Curie, Ernest Rutherford]

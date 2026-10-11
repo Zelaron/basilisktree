@@ -1,5 +1,6 @@
 ---
 title: Elliptic Curves
+importance: 66
 year: 1922
 requires: [group-theory, complex-analysis]
 by: [Henri Poincaré, Louis Mordell]

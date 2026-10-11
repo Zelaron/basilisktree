@@ -1,7 +1,8 @@
 ---
 title: Periodic Table
+importance: 86
 year: 1869
-requires: [atomic-theory]
+requires: [atomic-theory, karlsruhe-congress]
 by: [Dmitri Mendeleev]
 links:
   - https://en.wikipedia.org/wiki/Periodic_table

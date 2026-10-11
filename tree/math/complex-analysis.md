@@ -1,5 +1,6 @@
 ---
 title: Complex Analysis
+importance: 76
 year: 1825
 requires: [calculus, complex-numbers]
 by: [Augustin-Louis Cauchy, Bernhard Riemann]

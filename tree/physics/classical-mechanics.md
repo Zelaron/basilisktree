@@ -1,5 +1,6 @@
 ---
 title: Newtonian Mechanics
+importance: 97
 year: 1687
 requires: [calculus, kepler-laws, scientific-method]
 by: [Isaac Newton]

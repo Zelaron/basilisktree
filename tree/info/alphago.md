@@ -1,5 +1,6 @@
 ---
 title: AlphaGo
+importance: 62
 year: 2016
 requires: [deep-learning, reinforcement-learning]
 by: [Google DeepMind]

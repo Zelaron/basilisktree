@@ -1,5 +1,6 @@
 ---
 title: Perceptron
+importance: 62
 year: 1958
 requires: [artificial-neuron, electronic-computer, statistics]
 by: [Frank Rosenblatt]

@@ -1,5 +1,6 @@
 ---
 title: Partial Differential Equations
+importance: 84
 year: 1747
 requires: [calculus]
 by: [Jean le Rond d'Alembert, Leonhard Euler]

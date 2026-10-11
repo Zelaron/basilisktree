@@ -1,5 +1,6 @@
 ---
 title: Prime Number Theorem
+importance: 64
 year: 1896
 requires: [zeta-function]
 by: [Jacques Hadamard, Charles-Jean de la Vallée Poussin]

@@ -1,5 +1,6 @@
 ---
 title: Probabilistic Method
+importance: 58
 year: 1947
 requires: [probability, graph-theory]
 by: [Paul Erdős]

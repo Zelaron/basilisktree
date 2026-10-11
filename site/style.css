@@ -429,6 +429,7 @@ button.who:hover { border-bottom-color: var(--ink-2); }
 .viewport.far .world.person .node.lit .t { display: block; max-width: none; white-space: nowrap; -webkit-line-clamp: none; margin-left: -4px; padding: 0 5px; border-radius: 5px; background: rgba(10, 15, 30, 0.72); }
 .viewport.far .world.person .node.lit .m { display: none; }
 .viewport.far .world.person .node:not(.lit) .label, .viewport.far .world.focus .node:not(.lit) .label { opacity: 0; }
+.viewport.far .world.person .node.lit.crowded .label { opacity: 0; }
 
 /* ── importance ────────────────────────────────────────── */
 .node.open .star-box::after { width: calc(var(--ring) * 1px); height: calc(var(--ring) * 1px); margin: calc(var(--ring) * -0.5px) 0 0 calc(var(--ring) * -0.5px); }

@@ -1,5 +1,6 @@
 ---
 title: Energy Quanta
+importance: 82
 year: 1900
 requires: [statistical-mechanics, maxwell-equations]
 by: [Max Planck, Albert Einstein]

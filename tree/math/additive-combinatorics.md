@@ -1,5 +1,6 @@
 ---
 title: Additive Combinatorics
+importance: 55
 year: 1975
 requires: [probabilistic-method, fourier-analysis]
 by: [Endre Szemerédi, Ben Green, Terence Tao]

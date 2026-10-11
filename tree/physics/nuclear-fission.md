@@ -1,5 +1,6 @@
 ---
 title: Nuclear Fission
+importance: 84
 year: 1938
 requires: [nuclear-physics, special-relativity]
 by: [Otto Hahn, Fritz Strassmann, Lise Meitner, Otto Frisch]

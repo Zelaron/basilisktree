@@ -158,8 +158,13 @@
 
     // the Ledger: everyone credited for a discovery or for progress on a problem
     for (const n of S.nodes) {
-      for (const name of n.by) addPerson(name, n, n.year, 'discovery');
-      for (const pr of n.progress) for (const name of pr.by) addPerson(name, n, pr.year, 'progress');
+      // A claim is dated by the claimant's latest progress entry; that entry is not listed again.
+      const claimYear = (name) => Math.max(-Infinity, ...n.progress.filter((pr) => pr.by.includes(name)).map((pr) => pr.year));
+      for (const name of n.by) {
+        if (n.status === 'known') addPerson(name, n, n.year, 'discovery');
+        else addPerson(name, n, Number.isFinite(claimYear(name)) ? claimYear(name) : n.year ?? n.posed, 'claim');
+      }
+      for (const pr of n.progress) for (const name of pr.by) if (n.status === 'known' || !n.by.includes(name)) addPerson(name, n, pr.year, 'progress');
     }
   }
   function addPerson(name, n, year, kind) {
@@ -697,10 +702,24 @@
       setMajors(majorsAt(k));
       const m = 300, wx0 = (-m - x) / k, wx1 = (S.vpW + m - x) / k, wy0 = (-m - y) / k, wy1 = (S.vpH + m - y) / k;
       for (const n of S.majors) if (n.x > wx0 - (n.tw || 120) / k && n.x < wx1 && n.y > wy0 && n.y < wy1) show.add(n);
-      if (S.person && S.lit) for (const id of S.lit) show.add(S.byId.get(id));
+      // A person's lit discoveries keep their names too, most important first, skipping any that would overlap.
+      if (S.person && S.lit) {
+        const boxes = [];
+        for (const n of [...S.lit].map((id) => S.byId.get(id)).sort((a, b) => b.imp - a.imp)) {
+          const sx = x + n.x * k, sy = y + n.y * k;
+          const b = { x0: sx - 4, x1: sx + LABEL_X * k + (n.tw || 120) * 0.78 + 20, y0: sy - 6, y1: sy + 20 };
+          if (boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0)) continue;
+          boxes.push(b);
+          show.add(n);
+        }
+      }
       if (S.selected) show.add(S.selected);
     }
     for (const n of S.farLabels || []) if (!show.has(n)) n.labelEl.style.transform = '';
+    const crowded = new Set(far && S.person && S.lit ? [...S.lit].map((id) => S.byId.get(id)).filter((n) => !show.has(n)) : []);
+    for (const n of S.crowded || []) if (!crowded.has(n)) n.el.classList.remove('crowded');
+    for (const n of crowded) n.el.classList.add('crowded');
+    S.crowded = crowded;
     S.farLabels = [...show];
     const zs = Math.max(1, 0.5 / k);
     for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
@@ -1183,7 +1202,7 @@
       <p class="kicker">In the Ledger</p>
       <h2>${esc(p.name)}</h2>
       <p class="lede">${plural(items.length, 'entry', 'entries')} on the tree.</p>
-      <ul class="plain-list">${items.map((i) => nodeRow(S.byId.get(i.id), i.kind === 'progress' ? `progress · ${i.year}` : fmtYear(i.year))).join('')}</ul>`;
+      <ul class="plain-list">${items.map((i) => nodeRow(S.byId.get(i.id), i.kind === 'progress' ? `progress · ${i.year}` : i.kind === 'claim' ? `claimed · ${fmtYear(i.year)}` : fmtYear(i.year))).join('')}</ul>`;
   }
 
   const ACTIONS = {
@@ -1316,7 +1335,7 @@
       ? results
           .map((r, i) =>
             r.kind === 'node'
-              ? `<li role="option" id="sr-${i}" data-i="${i}" aria-selected="${i === 0}">${dotFor(r.n)}<span class="sr-title">${esc(r.n.title)}</span><span class="sr-meta">${esc(r.n.status === 'known' ? fmtYear(r.n.year, r.n.circa) : 'open')}</span></li>`
+              ? `<li role="option" id="sr-${i}" data-i="${i}" aria-selected="${i === 0}">${dotFor(r.n)}<span class="sr-title">${esc(r.n.title)}</span><span class="sr-meta">${esc(r.n.status === 'known' ? fmtYear(r.n.year, r.n.circa) : r.n.status)}</span></li>`
               : `<li role="option" id="sr-${i}" data-i="${i}" aria-selected="${i === 0}"><span class="dot" style="--h:90;background:var(--ink-2);box-shadow:none"></span><span class="sr-title">${esc(r.p.name)}</span><span class="sr-meta">${plural(r.p.items.length, 'entry', 'entries')}</span></li>`,
           )
           .join('')

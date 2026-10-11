@@ -1,5 +1,6 @@
 ---
 title: GPU Computing
+importance: 76
 year: 2007
 requires: [microprocessor]
 by: [NVIDIA]

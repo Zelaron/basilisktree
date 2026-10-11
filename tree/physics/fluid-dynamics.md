@@ -1,5 +1,6 @@
 ---
 title: Fluid Dynamics
+importance: 76
 year: 1845
 requires: [classical-mechanics, pdes]
 by: [Daniel Bernoulli, Claude-Louis Navier, George Gabriel Stokes]

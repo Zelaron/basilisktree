@@ -1,5 +1,6 @@
 ---
 title: Modular Arithmetic
+importance: 74
 year: 1801
 requires: [primes, algebra]
 by: [Carl Friedrich Gauss]

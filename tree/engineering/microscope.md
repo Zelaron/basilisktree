@@ -1,5 +1,6 @@
 ---
 title: Microscope
+importance: 88
 year: 1665
 requires: [optics]
 by: [Robert Hooke, Antonie van Leeuwenhoek]

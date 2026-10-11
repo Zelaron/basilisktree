@@ -1,5 +1,6 @@
 ---
 title: Euclidean Geometry
+importance: 94
 year: -300
 circa: true
 requires: [arithmetic]

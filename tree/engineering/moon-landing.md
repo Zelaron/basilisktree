@@ -1,5 +1,6 @@
 ---
 title: Moon Landing
+importance: 70
 year: 1969
 requires: [spaceflight, integrated-circuit]
 by: [NASA]
