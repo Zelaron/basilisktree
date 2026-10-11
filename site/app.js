@@ -541,6 +541,8 @@
   }
 
   function drawCanvas(now) {
+    S.lastDraw = now;
+    S.pinging = false;
     const c = sky, w = S.vpW, h = S.vpH;
     c.clearRect(0, 0, w, h);
     drawSkyStars(w, h);
@@ -642,6 +644,8 @@
       c.fillStyle = rgba(col, alphaOf(n));
       c.fill();
     }
+    // Ping phase: expands over the first 70% of a 3.4 s cycle, then rests. Off at far zoom.
+    const ping = calm() || far ? null : ((now / 3400) % 1) / 0.7;
     for (const n of rings) {
       const [cx, cy] = toScreen(n.x + STAR_CX, n.y + STAR_CY);
       const r = (n.ring / 2) * grow, a = alphaOf(n);
@@ -669,6 +673,18 @@
         c.fillStyle = rgba(GOLD, a);
         c.fill();
       }
+      // An open problem sends out a slow ping until it is hovered or selected.
+      if (ping !== null && n.status === 'open' && n !== S.selected && n !== S.hoverNode) {
+        S.pinging = true;
+        if (ping < 1) {
+          const e = 1 - (1 - ping) ** 2, s = 1 + 1.6 * e;
+          c.beginPath();
+          c.arc(cx, cy, r * s, 0, Math.PI * 2);
+          c.lineWidth = grow * s;
+          c.strokeStyle = rgba(GOLD, 0.75 * (1 - e) * a);
+          c.stroke();
+        }
+      }
     }
     if (S.selected) {
       const n = S.selected;
@@ -683,12 +699,34 @@
   }
 
   // ── view ────────────────────────────────────────────────────────────
-  let raf = 0;
-  const requestFrame = () => {
-    if (!raf) raf = requestAnimationFrame(applyView);
+  // One pending frame at most. applyView can also be called directly (flights, boot); it then takes
+  // over any pending frame, so the trail animation never ends up running in parallel loops.
+  // Frames that only advance the trail or the pings redraw the canvas and leave the page alone;
+  // on touch screens they run at 30 fps.
+  let raf = 0, animOnly = true;
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  const requestFrame = (anim = false) => {
+    if (!anim) animOnly = false;
+    if (!raf) raf = requestAnimationFrame(frame);
   };
-  function applyView(now) {
+  function frame(now) {
     raf = 0;
+    const anim = animOnly;
+    animOnly = true;
+    if (!anim) return applyView(now);
+    if (coarse && now - S.lastDraw < 30) return requestFrame(true);
+    drawCanvas(now);
+    keepAnimating();
+  }
+  function keepAnimating() {
+    if (!calm() && (S.hiAnimated || S.pinging)) requestFrame(true);
+  }
+  function applyView(now = performance.now()) {
+    if (raf) {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+    animOnly = true;
     const { x, y, k } = S.view;
     world.style.transform = `translate3d(${x}px,${y}px,0) scale(${k})`;
     const far = k < FAR_K;
@@ -697,36 +735,38 @@
       vpEl.classList.toggle('far', far);
     }
     // Zoomed out, a few labels stay readable: scale those few against the zoom.
-    const show = new Set();
-    if (far) {
-      setMajors(majorsAt(k));
-      const m = 300, wx0 = (-m - x) / k, wx1 = (S.vpW + m - x) / k, wy0 = (-m - y) / k, wy1 = (S.vpH + m - y) / k;
-      for (const n of S.majors) if (n.x > wx0 - (n.tw || 120) / k && n.x < wx1 && n.y > wy0 && n.y < wy1) show.add(n);
-      // A person's lit discoveries keep their names too, most important first, skipping any that would overlap.
-      if (S.person && S.lit) {
-        const boxes = [];
-        for (const n of [...S.lit].map((id) => S.byId.get(id)).sort((a, b) => b.imp - a.imp)) {
-          const sx = x + n.x * k, sy = y + n.y * k;
-          const b = { x0: sx - 4, x1: sx + LABEL_X * k + (n.tw || 120) * 0.78 + 20, y0: sy - 6, y1: sy + 20 };
-          if (boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0)) continue;
-          boxes.push(b);
-          show.add(n);
+    if (!S.flying) {
+      const show = new Set();
+      if (far) {
+        setMajors(majorsAt(k));
+        const m = 300, wx0 = (-m - x) / k, wx1 = (S.vpW + m - x) / k, wy0 = (-m - y) / k, wy1 = (S.vpH + m - y) / k;
+        for (const n of S.majors) if (n.x > wx0 - (n.tw || 120) / k && n.x < wx1 && n.y > wy0 && n.y < wy1) show.add(n);
+        // A person's lit discoveries keep their names too, most important first, skipping any that would overlap.
+        if (S.person && S.lit) {
+          const boxes = [];
+          for (const n of [...S.lit].map((id) => S.byId.get(id)).sort((a, b) => b.imp - a.imp)) {
+            const sx = x + n.x * k, sy = y + n.y * k;
+            const b = { x0: sx - 4, x1: sx + LABEL_X * k + (n.tw || 120) * 0.78 + 20, y0: sy - 6, y1: sy + 20 };
+            if (boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0)) continue;
+            boxes.push(b);
+            show.add(n);
+          }
         }
+        if (S.selected) show.add(S.selected);
       }
-      if (S.selected) show.add(S.selected);
+      for (const n of S.farLabels || []) if (!show.has(n)) n.labelEl.style.transform = '';
+      const crowded = new Set(far && S.person && S.lit ? [...S.lit].map((id) => S.byId.get(id)).filter((n) => !show.has(n)) : []);
+      for (const n of S.crowded || []) if (!crowded.has(n)) n.el.classList.remove('crowded');
+      for (const n of crowded) n.el.classList.add('crowded');
+      S.crowded = crowded;
+      S.farLabels = [...show];
+      const zs = Math.max(1, 0.5 / k);
+      for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
     }
-    for (const n of S.farLabels || []) if (!show.has(n)) n.labelEl.style.transform = '';
-    const crowded = new Set(far && S.person && S.lit ? [...S.lit].map((id) => S.byId.get(id)).filter((n) => !show.has(n)) : []);
-    for (const n of S.crowded || []) if (!crowded.has(n)) n.el.classList.remove('crowded');
-    for (const n of crowded) n.el.classList.add('crowded');
-    S.crowded = crowded;
-    S.farLabels = [...show];
-    const zs = Math.max(1, 0.5 / k);
-    for (const n of S.farLabels) n.labelEl.style.transform = `translateX(${(n.r * zs - 7).toFixed(1)}px) scale(${(0.78 / k).toFixed(4)})`;
     drawCanvas(now);
     updateRuler();
     updateStrip();
-    if (S.hiAnimated && !calm()) requestFrame();
+    keepAnimating();
   }
 
   let movingTimer = 0;
@@ -832,8 +872,18 @@
     i.duration = Math.abs(S2) * 1000;
     return i;
   }
+  // While flying, far-zoom labels are hidden and left alone, so the sweep never repaints them.
+  function setFlying(on) {
+    S.flying = on;
+    vpEl.classList.toggle('flying', on);
+  }
   function cancelFlight() {
-    if (S.flight) cancelAnimationFrame(S.flight);
+    if (S.flight) {
+      cancelAnimationFrame(S.flight);
+      vpEl.classList.remove('moving');
+      setFlying(false);
+      requestFrame();
+    }
     S.flight = 0;
   }
   function flyTo(target, { duration, min = 380, max = 2200 } = {}) {
@@ -854,6 +904,7 @@
     return new Promise((resolve) => {
       const t0 = performance.now();
       vpEl.classList.add('moving');
+      setFlying(true);
       const step = (now) => {
         const t = Math.min(1, (now - t0) / dur);
         const [wx, wy, w] = interp(easeInOut(t));
@@ -866,6 +917,7 @@
         else {
           S.flight = 0;
           vpEl.classList.remove('moving');
+          setFlying(false);
           applyView();
           resolve();
         }
@@ -1536,12 +1588,20 @@
     nodesEl.addEventListener('pointerover', (e) => {
       if (e.pointerType !== 'mouse') return;
       const el = e.target.closest('.node');
-      if (el) hoverPreview(S.byId.get(el.dataset.id));
+      if (el) {
+        S.hoverNode = S.byId.get(el.dataset.id);
+        hoverPreview(S.hoverNode);
+        requestFrame(true);
+      }
     });
     nodesEl.addEventListener('pointerout', (e) => {
       if (e.pointerType !== 'mouse') return;
       const el = e.target.closest('.node');
-      if (el && !el.contains(e.relatedTarget)) hoverPreview(null);
+      if (el && !el.contains(e.relatedTarget)) {
+        S.hoverNode = null;
+        hoverPreview(null);
+        requestFrame(true);
+      }
     });
     stripEl.addEventListener('click', (e) => {
       const b = e.target.closest('.lane-tag');
