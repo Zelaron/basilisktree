@@ -10,4 +10,4 @@ links:
   - https://en.wikipedia.org/wiki/Ising_model
   - https://en.wikipedia.org/wiki/Lars_Onsager
 ---
-Lars Onsager found in 1944 the exact free energy of the two-dimensional Ising model, showing that a lattice of interacting spins has a sharp phase transition with a logarithmic divergence of the specific heat. It was the first exact solution of a model with a phase transition, and its critical behaviour became a benchmark for later theories.
+Lars Onsager found in 1944 the exact free energy of the two-dimensional Ising model, showing that a lattice of interacting spins has a sharp phase transition with a logarithmic divergence of the specific heat. It was the first exact solution of an interacting model with a phase transition, and its critical behaviour became a benchmark for later theories.

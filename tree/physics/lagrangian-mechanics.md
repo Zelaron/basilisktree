@@ -9,4 +9,4 @@ aliases: [analytical mechanics, Lagrange's equations, Euler–Lagrange equations
 links:
   - https://en.wikipedia.org/wiki/Lagrangian_mechanics
 ---
-Joseph-Louis Lagrange's Mécanique analytique (1788) rebuilt Newtonian mechanics on one general principle, with equations of motion written in any convenient coordinates, building on the least-action work of Maupertuis and Euler. The method handles constraints easily and became the standard language of theoretical physics, from field theory to general relativity.
+Joseph-Louis Lagrange's Mécanique analytique (1788) rebuilt Newtonian mechanics on the principle of virtual work and d'Alembert's principle, with equations of motion written in any convenient coordinates, extending the variational methods of Euler. The method handles constraints easily and became the standard language of theoretical physics, from field theory to general relativity.

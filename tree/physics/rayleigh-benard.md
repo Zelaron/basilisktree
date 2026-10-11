@@ -9,4 +9,4 @@ aliases: [convection cells, Rayleigh number, Bénard cells]
 links:
   - https://en.wikipedia.org/wiki/Rayleigh%E2%80%93B%C3%A9nard_convection
 ---
-A thin layer of fluid heated from below stays still until the temperature difference passes a threshold, then breaks into regular convection cells. Henri Bénard photographed the cells in 1900, and Lord Rayleigh (1916) showed that the onset depends on one dimensionless number, the Rayleigh number. It is the standard model of convection in atmospheres, mantles and stars.
+A fluid layer heated from below stays still until the temperature difference passes a threshold, then breaks into convection cells. Henri Bénard photographed cells in 1900 (later shown to be driven by surface tension), and Lord Rayleigh (1916) analysed the buoyancy-driven case, where onset depends on the dimensionless Rayleigh number. It models convection in atmospheres and mantles.

@@ -9,4 +9,4 @@ aliases: [relativistic quantum mechanics, Dirac sea]
 links:
   - https://en.wikipedia.org/wiki/Dirac_equation
 ---
-Paul Dirac wrote down in 1928 a relativistic wave equation for the electron. It gives the electron's spin and magnetic moment automatically, accounts for the fine structure of hydrogen, and has solutions of negative energy that Dirac interpreted as antiparticles, which predicted the positron (found in 1932).
+Paul Dirac wrote down in 1928 a relativistic wave equation for the electron. It gives the electron's spin and magnetic moment automatically, accounts for the fine structure of hydrogen, and has negative-energy solutions that Dirac interpreted in 1931 as antielectrons, which predicted the positron (found in 1932).

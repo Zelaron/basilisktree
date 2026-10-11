@@ -9,4 +9,4 @@ aliases: [Einstein–Smoluchowski theory, reality of atoms]
 links:
   - https://en.wikipedia.org/wiki/Brownian_motion
 ---
-Albert Einstein showed in 1905 that the zigzag motion of pollen grains and other small particles in a liquid comes from molecular impacts, and gave a formula linking the particles' spread to temperature, viscosity and molecular size. Marian Smoluchowski found the result independently in 1906, and Jean Perrin's measurements (1908) convinced most remaining sceptics that atoms exist.
+Albert Einstein showed in 1905 that the zigzag motion of small particles in a liquid comes from molecular impacts, and gave a formula linking their spread to temperature, viscosity, particle size and Avogadro's number. Marian Smoluchowski found the result independently in 1906, and Jean Perrin's measurements (1908) convinced most remaining sceptics that atoms exist.

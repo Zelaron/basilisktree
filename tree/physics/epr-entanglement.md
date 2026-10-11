@@ -10,4 +10,4 @@ links:
   - https://en.wikipedia.org/wiki/Einstein%E2%80%93Podolsky%E2%80%93Rosen_paradox
   - https://en.wikipedia.org/wiki/Quantum_entanglement
 ---
-Albert Einstein, Boris Podolsky and Nathan Rosen argued in 1935 that quantum mechanics is incomplete, because it allows distant particles to have correlated properties that are not fixed beforehand. Erwin Schrödinger named such correlations entanglement the same year. Bell's theorem (1964) made them testable, and entanglement is now a resource of quantum information science.
+Albert Einstein, Boris Podolsky and Nathan Rosen argued in 1935 that quantum mechanics is incomplete: measuring one of two correlated particles lets one predict the other's position or momentum without disturbing it, so both must have definite values the theory omits. Schrödinger named such correlations entanglement, and Bell's theorem (1964) made the question testable.

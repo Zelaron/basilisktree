@@ -9,4 +9,4 @@ aliases: [Einstein coefficients, laser principle]
 links:
   - https://en.wikipedia.org/wiki/Stimulated_emission
 ---
-In 1917 Einstein showed from the thermodynamics of radiation that an excited atom can be triggered by a passing photon to emit a second photon with the same frequency, direction and phase. Stimulated emission is the principle behind masers and lasers, which were built in 1954 and 1960.
+In 1917 Einstein showed from the thermodynamics of radiation that an excited atom can be triggered by a passing photon to emit a second photon of the same frequency and direction. Stimulated emission is the principle behind masers and lasers, which were built in 1954 and 1960.

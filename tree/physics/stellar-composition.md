@@ -10,4 +10,4 @@ links:
   - https://en.wikipedia.org/wiki/Cecilia_Payne-Gaposchkin
   - https://en.wikipedia.org/wiki/Saha_ionization_equation
 ---
-In her 1925 Harvard thesis Cecilia Payne used Meghnad Saha's ionization equation (1920) to turn the spectral classes of stars into temperatures and abundances. She concluded that stars are overwhelmingly hydrogen and helium, against the accepted view that they resemble Earth in composition, and Henry Norris Russell confirmed the result in 1929.
+In her 1925 Harvard thesis Cecilia Payne used Meghnad Saha's ionization equation (1920) to turn the spectral classes of stars into temperatures and abundances. Her results made stars mostly hydrogen and helium, far from Earth-like, which she called almost certainly not real, deferring to Henry Norris Russell, who confirmed them himself in 1929.

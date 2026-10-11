@@ -9,4 +9,4 @@ aliases: [primordial nucleosynthesis, Alpher–Bethe–Gamow, light element abun
 links:
   - https://en.wikipedia.org/wiki/Big_Bang_nucleosynthesis
 ---
-Ralph Alpher and George Gamow proposed in 1948 that the light elements formed in the first minutes of a hot, expanding universe. Work by Alpher, Robert Herman and Chushiro Hayashi showed that about a quarter of the mass ends up as helium-4, with traces of deuterium, helium-3 and lithium-7. The predicted abundances match observations and are a main pillar of the Big Bang model.
+Ralph Alpher and George Gamow proposed in 1948 that nuclei formed by neutron capture in a hot, expanding early universe. This works for the lightest elements: Chushiro Hayashi (1950) and Alpher, Follin and Herman (1953) worked out the neutron-proton balance that leaves about a quarter of the mass as helium, and calculations in 1966-67 added deuterium, helium-3 and lithium-7.

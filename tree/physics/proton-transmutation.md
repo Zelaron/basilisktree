@@ -10,4 +10,4 @@ links:
   - https://en.wikipedia.org/wiki/Nuclear_transmutation
   - https://en.wikipedia.org/wiki/Proton
 ---
-Ernest Rutherford found in experiments of 1917, reported in 1919, that alpha particles striking nitrogen gas knock out hydrogen nuclei and leave oxygen. This was the first artificial transmutation of one element into another, and Rutherford named the hydrogen nucleus the proton in 1920.
+Ernest Rutherford found in experiments of 1917, reported in 1919, that alpha particles striking nitrogen gas knock out hydrogen nuclei, the first artificial disintegration of a nucleus. Patrick Blackett showed in 1925 that the nitrogen captures the alpha and becomes oxygen-17, so one element had been turned into another. Rutherford named the proton in 1920.

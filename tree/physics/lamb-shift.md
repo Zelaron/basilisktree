@@ -9,4 +9,4 @@ aliases: [Lamb–Retherford experiment, radiative corrections, vacuum fluctuatio
 links:
   - https://en.wikipedia.org/wiki/Lamb_shift
 ---
-Willis Lamb and Robert Retherford measured in 1947, with microwaves, that two hydrogen levels which Dirac's theory predicts to be equal differ by about 1,058 MHz. Hans Bethe quickly calculated the shift as the electron's interaction with the quantum vacuum, with a high-energy cutoff, which showed how infinities could be handled and launched renormalized quantum electrodynamics.
+Willis Lamb and Robert Retherford found in 1947, with microwaves, that two hydrogen levels that Dirac's theory makes equal differ by about 1,000 MHz, later refined to 1,058 MHz. Hans Bethe explained the shift as the electron's interaction with the quantum vacuum, with a high-energy cutoff, which showed how to handle infinities and launched renormalized quantum electrodynamics.
