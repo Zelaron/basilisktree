@@ -10,4 +10,4 @@ quote:
 links:
   - https://en.wikipedia.org/wiki/Maxwell's_equations
 ---
-Four equations for electric and magnetic fields predict waves travelling at the speed of light (1865). Light turned out to be electromagnetism.
+Maxwell's field equations (1865) predict waves travelling at the speed of light, so light turned out to be electromagnetism. Heaviside later condensed them into the four vector equations taught today (1884).

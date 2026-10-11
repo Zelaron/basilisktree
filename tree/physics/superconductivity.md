@@ -7,4 +7,4 @@ aliases: [BCS theory]
 links:
   - https://en.wikipedia.org/wiki/Superconductivity
 ---
-Below 4.2 K, mercury loses all electrical resistance (1911). The explanation, Cooper pairs in BCS theory (1957), took another 46 years.
+Below about 4.2 K, mercury loses all electrical resistance (1911). The explanation, Cooper pairs in BCS theory (1957), took another 46 years.

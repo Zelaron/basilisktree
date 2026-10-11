@@ -1,5 +1,5 @@
 ---
-title: Nuclear Fusion
+title: Fusion in Stars
 year: 1939
 requires: [nuclear-physics, quantum-mechanics]
 by: [Hans Bethe]

@@ -7,4 +7,4 @@ aliases: [cuprates, YBCO]
 links:
   - https://en.wikipedia.org/wiki/High-temperature_superconductivity
 ---
-Copper-oxide ceramics superconduct far above previous records (1986); by 1987 YBCO worked in liquid nitrogen at 93 K. Nobody yet agrees on why they work.
+Copper-oxide ceramics superconduct far above previous records (1986); by 1987 YBCO worked in liquid nitrogen at 93 K. The ambient-pressure record, held by a mercury cuprate since 1993, rose to 151 K in 2026 by pressure quenching. Nobody yet agrees on why they work.

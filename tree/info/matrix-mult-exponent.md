@@ -24,5 +24,10 @@ progress:
     with: [AlphaEvolve]
     what: "AlphaEvolve-assisted numerical optimization, combined with the asymmetric laser method, gives ω < 2.371177."
     link: https://arxiv.org/abs/2608.16884
+  - year: 2026
+    by: [OpenAI]
+    with: [OpenAI internal model, Lean 4]
+    what: "Claimed ω ≤ 9/4 over the complex numbers by a new approach, and ω < 2.371054886 over every field (family 107 of OpenAI's math release, formalized in Lean). Not yet independently reviewed."
+    link: https://github.com/openai/math
 ---
-Can two n × n matrices be multiplied in about n² steps? The exponent ω is known to be below 2.3712 and is conjectured to be exactly 2.
+Can two n × n matrices be multiplied in about n² steps? The exponent ω is known to be below 2.3712 and is conjectured to be exactly 2. A 2026 claim, formalized in Lean but not yet reviewed, would lower it to 9/4 over the complex numbers.

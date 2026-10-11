@@ -19,5 +19,10 @@ progress:
     by: [Larry Guth, James Maynard]
     what: "New large-value estimates for Dirichlet polynomials, the first substantial improvement on Ingham's 1940 zero-density bound."
     link: https://arxiv.org/abs/2405.20552
+  - year: 2026
+    by: [OpenAI]
+    with: [OpenAI internal model, Lean 4]
+    what: "Claimed proof of the quasi-Riemann hypothesis: every Dirichlet L-function, including ζ(s), is zero-free for Re s > 7/8 (family 003 of OpenAI's math release, formalized in Lean). Not yet independently reviewed."
+    link: https://github.com/openai/math
 ---
 All non-trivial zeros of ζ(s) have real part ½. It is equivalent to the best possible error term in the prime number theorem. A Clay Millennium Prize problem.

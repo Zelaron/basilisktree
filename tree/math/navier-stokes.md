@@ -7,7 +7,7 @@ posed: 1934
 requires: [fluid-dynamics, functional-analysis]
 by: [OpenAI]
 with: [OpenAI multi-agent system, Lean 4]
-aliases: [turbulence, blow-up, Millennium Prize]
+aliases: [blow-up, Millennium Prize]
 links:
   - https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_existence_and_smoothness
   - https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_priority_controversy
