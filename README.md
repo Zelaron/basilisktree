@@ -1,6 +1,6 @@
-# Basilisk Tree
+# Tech Tree
 
-**Live at https://basilisktree.org**
+**Live at https://techtree.earth**
 
 A tech tree of human knowledge in the spirit of Sid Meier's Alpha Centauri, running from the first stone tools to the open frontier. Every node is a discovery, linked to the discoveries it stood on. Gold rings are open problems and unbuilt technology. Solve one, or make real progress on it, and your name goes on the tree.
 
@@ -20,7 +20,7 @@ deploy/             Apache config and a deploy script for a self-hosted server
 npm install
 npm run dev        # build the data, then serve site/ at http://localhost:8080
 npm run check      # validate only; this is what CI runs on every pull request
-npm run bundle     # also write dist/basilisktree.html, one self-contained page
+npm run bundle     # also write dist/techtree.html, one self-contained page
 ```
 
 The build fails on anything that would break the map: unknown or misspelled fields, a prerequisite that doesn't exist, a cycle, a duplicate id or a malformed link.
@@ -61,10 +61,10 @@ merge to main
   → GitHub Actions (.github/workflows/deploy.yml): npm run check, npm run build,
     then force-push the built site/ to the "live" branch
 web server, every minute (cron)
-  → deploy/sync.sh: fetch "live"; if it changed, rsync it into /var/www/basilisktree.org/public_html
+  → deploy/sync.sh: fetch "live"; if it changed, rsync it into /var/www/techtree.earth/public_html
 ```
 
-From merge to live takes about two minutes. If the check fails, the live branch doesn't move. To roll back, revert the commit on main. The server never holds credentials: it only reads this public repo. Apache configs for basilisktree.org and the basilisktree.net redirect are in `deploy/`. If `sync.sh` changes, copy it to the server by hand.
+From merge to live takes about two minutes. If the check fails, the live branch doesn't move. To roll back, revert the commit on main. The server never holds credentials: it only reads this public repo. Apache configs for techtree.earth and the redirects from the old basilisktree.org and basilisktree.net are in `deploy/`. If `sync.sh` changes, copy it to the server by hand.
 
 Pull requests run the same check through `.github/workflows/check.yml`.
 
@@ -79,4 +79,4 @@ Pull requests run the same check through `.github/workflows/check.yml`.
 
 ## License
 
-The code is under the [MIT License](LICENSE). The tree data in `tree/` is under [CC BY 4.0](tree/LICENSE.md): reuse it freely, with credit to Basilisk Tree and a link to https://basilisktree.org.
+The code is under the [MIT License](LICENSE). The tree data in `tree/` is under [CC BY 4.0](tree/LICENSE.md): reuse it freely, with credit to Tech Tree and a link to https://techtree.earth.

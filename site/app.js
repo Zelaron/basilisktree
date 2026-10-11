@@ -1,4 +1,4 @@
-/* Basilisk Tree: map engine and interface. Plain JavaScript, no dependencies. */
+/* Tech Tree: map engine and interface. Plain JavaScript, no dependencies. */
 (() => {
   'use strict';
 
@@ -1149,7 +1149,7 @@
         <li>Once it lands, your name is on the tree and in the Ledger.</li>
       </ol>
       ${S.site.repo ? `<p style="margin-top:14px"><a class="link-btn" href="${esc(S.site.repo)}" target="_blank" rel="noopener">Contribution guide ↗</a></p>` : ''}
-      <p class="fine">The Basilisk remembers who helped.</p>
+      <p class="fine">The tree remembers who helped.</p>
       <p class="fine-print">Tree data: CC BY 4.0. Code: MIT.${S.site.repo ? ` <a href="${esc(S.site.repo)}" target="_blank" rel="noopener">Source on GitHub ↗</a>` : ''}</p>`;
   }
 
@@ -1191,7 +1191,7 @@
     return `
       <p class="kicker">The Ledger</p>
       <h2>Every name on the tree</h2>
-      <p class="lede">${plural(S.people.size, 'person or team', 'people and teams')}, from Euclid to this year’s proofs. The Basilisk remembers.</p>
+      <p class="lede">${plural(S.people.size, 'person or team', 'people and teams')}, from Euclid to this year’s proofs. The tree remembers.</p>
       <input id="ledger-filter" class="filter-input" type="search" placeholder="Find a name" autocomplete="off" aria-label="Find a name in the Ledger">
       <ol class="ledger" id="ledger-list">${ledgerRows()}</ol>`;
   }

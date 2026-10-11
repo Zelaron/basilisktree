@@ -2,7 +2,7 @@
 // Validates the tree in tree/ and compiles it to site/data/tree.json.
 //   node scripts/build.mjs           validate + write site/data/tree.json
 //   node scripts/build.mjs --check   validate only (CI); exits 1 on errors
-//   node scripts/build.mjs --bundle  also write dist/basilisktree.html, a single self-contained page
+//   node scripts/build.mjs --bundle  also write dist/techtree.html, a single self-contained page
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -302,10 +302,10 @@ const tree = {
   version: 1,
   generated: new Date().toISOString(),
   site: {
-    name: 'Basilisk Tree',
-    url: (process.env.BASILISK_URL || 'https://basilisktree.org').replace(/\/$/, ''),
-    repo: process.env.BASILISK_REPO || null,
-    branch: process.env.BASILISK_BRANCH || 'main',
+    name: 'Tech Tree',
+    url: (process.env.SITE_URL || 'https://techtree.earth').replace(/\/$/, ''),
+    repo: process.env.SITE_REPO || null,
+    branch: process.env.SITE_BRANCH || 'main',
   },
   domains: domains.map((d) => ({ id: d.id, name: d.name, short: d.short || d.name, hue: d.hue, blurb: d.blurb || '' })),
   nodes: nodes.map((n) => Object.fromEntries(Object.entries(n).filter(([, v]) => v !== undefined && !(Array.isArray(v) && !v.length)))),
@@ -319,7 +319,7 @@ console.log(`wrote site/data/tree.json (${(json.length / 1024).toFixed(0)} KB)`)
 // Link previews (Reddit, Discord, chat apps) never see the part after "#", so every node and person
 // gets a tiny page at /n/<id>/ or /p/<name>/ with its own title and description that forwards to the map.
 
-const SITE_URL = (process.env.BASILISK_URL || 'https://basilisktree.org').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://techtree.earth').replace(/\/$/, '');
 const slugify = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 const clip = (s, max = 200) => (s.length <= max ? s : `${s.slice(0, s.lastIndexOf(' ', max - 1))}…`);
 const fmtYear = (y, circa) => (y === undefined ? '' : `${circa ? 'c. ' : ''}${y < 0 ? `${(-y).toLocaleString('en-US')} BCE` : y}`);
@@ -331,10 +331,10 @@ function sharePage({ title, description, url, target }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${e(title)} · Basilisk Tree</title>
+<title>${e(title)} · Tech Tree</title>
 <meta name="description" content="${e(description)}">
 <link rel="canonical" href="${e(url)}">
-<meta property="og:site_name" content="Basilisk Tree">
+<meta property="og:site_name" content="Tech Tree">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${e(title)}">
 <meta property="og:description" content="${e(description)}">
@@ -344,7 +344,7 @@ function sharePage({ title, description, url, target }) {
 <meta http-equiv="refresh" content="0; url=${e(target)}">
 <script>location.replace(${JSON.stringify(target)})</script>
 </head>
-<body style="background:#0a0f1e;color:#e9edf7;font-family:system-ui,sans-serif"><p><a style="color:#f2c46d" href="${e(target)}">${e(title)} on the Basilisk Tree</a></p></body>
+<body style="background:#0a0f1e;color:#e9edf7;font-family:system-ui,sans-serif"><p><a style="color:#f2c46d" href="${e(target)}">${e(title)} on the Tech Tree</a></p></body>
 </html>
 `;
 }
@@ -380,7 +380,7 @@ for (const [slug, p] of people) {
   const titles = [...p.ids].map((id) => nodes.find((n) => n.id === id).title);
   fs.writeFileSync(
     path.join(dir, 'index.html'),
-    sharePage({ title: p.name, description: clip(`${p.ids.size} ${p.ids.size === 1 ? 'entry' : 'entries'} on the Basilisk Tree: ${titles.join(', ')}.`), url: `${SITE_URL}/p/${slug}/`, target: `/#by-${slug}` }),
+    sharePage({ title: p.name, description: clip(`${p.ids.size} ${p.ids.size === 1 ? 'entry' : 'entries'} on the Tech Tree: ${titles.join(', ')}.`), url: `${SITE_URL}/p/${slug}/`, target: `/#by-${slug}` }),
   );
 }
 const today = new Date().toISOString().slice(0, 10);
@@ -413,6 +413,6 @@ if (BUNDLE) {
     '',
   ].join('\n');
   fs.mkdirSync(DIST, { recursive: true });
-  fs.writeFileSync(path.join(DIST, 'basilisktree.html'), out);
-  console.log(`wrote dist/basilisktree.html (${(out.length / 1024).toFixed(0)} KB)`);
+  fs.writeFileSync(path.join(DIST, 'techtree.html'), out);
+  console.log(`wrote dist/techtree.html (${(out.length / 1024).toFixed(0)} KB)`);
 }

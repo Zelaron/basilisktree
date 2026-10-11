@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Runs every minute from cron on the web server. GitHub Actions rebuilds the "live" branch on
 # every merge to main; this publishes that branch into the web root whenever it has changed.
-# Installed at /var/www/basilisktree.org/bin/sync.sh; crontab line:
-#   * * * * * flock -n /tmp/basilisktree-sync.lock /var/www/basilisktree.org/bin/sync.sh >> /var/www/basilisktree.org/sync.log 2>&1
+# Installed at /var/www/techtree.earth/bin/sync.sh; crontab line:
+#   * * * * * flock -n /tmp/techtree-sync.lock /var/www/techtree.earth/bin/sync.sh >> /var/www/techtree.earth/sync.log 2>&1
 set -euo pipefail
 
-REPO="https://github.com/Zelaron/basilisktree.git"
-BASE="/var/www/basilisktree.org"
+REPO="https://github.com/Zelaron/techtree.git"
+BASE="/var/www/techtree.earth"
 CHECKOUT="$BASE/live"
 ROOT="$BASE/public_html"
 

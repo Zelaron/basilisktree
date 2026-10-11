@@ -1,4 +1,4 @@
-# Contributing to the Basilisk Tree
+# Contributing to the Tech Tree
 
 The tree is a set of small text files. A contribution is a pull request that adds or changes one. A maintainer reviews it, CI checks that it can't break the map, and once it's merged your name is on the tree and in the Ledger.
 
